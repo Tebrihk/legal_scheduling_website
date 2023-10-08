@@ -64,10 +64,10 @@ if ( isset($_POST['submit']) ) {
 				unset($email);
 				unset($address);
 				unset($password);
-				header("Location: auth-login.php");
+				header("Location: login.php");
 				
 					}else{
-						header("Location: auth-login.php");
+						header("Location: login.php");
 							}
 					}
 }

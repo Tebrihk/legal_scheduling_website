@@ -31,6 +31,28 @@ $conn->close();
 
 
 ?>
+<?php
+    $servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	
+	
+    ob_start();
+	session_start();
+	
+	// if session is not set this will redirect to login page
+	if( !isset($_SESSION['user']) ) {
+		header("refresh:1;url=login.php");
+		exit;
+	}
+		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
+		
+		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
+			$row=mysqli_fetch_array($sql);
+
+?>       
 <!DOCTYPE html>
 <html lang="en">
 
@@ -204,7 +226,7 @@ $conn->close();
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
                                 <span></span>
-                                <div>Admin</div>
+                                <div><?php echo $row['name']; ?></div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>

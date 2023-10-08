@@ -145,3 +145,4 @@
 <script src="../assets/js/login.js"></script>
 </body>
 </html>
+<?php ob_end_flush(); ?>

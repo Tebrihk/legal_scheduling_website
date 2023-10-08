@@ -1,3 +1,25 @@
+<?php
+    $servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	
+	
+    ob_start();
+	session_start();
+	
+	// if session is not set this will redirect to login page
+	if( !isset($_SESSION['user']) ) {
+		header("refresh:1;url=login.php");
+		exit;
+	}
+		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
+		
+		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
+			$row=mysqli_fetch_array($sql);
+
+?>       
 <!DOCTYPE html>
 <html lang="en">
 
@@ -167,7 +189,7 @@
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
                                 <span></span>
-                                <div>Admin</div>
+                                <div><?php echo $row['name']; ?></div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -186,7 +208,7 @@
                                         <i class="ti-settings"></i> Setting
                                     </div>
                                 </a>
-                                <a href="#">
+                                <a href="logout.php">
                                     <div class="description">
                                         <i class="ti-power-off"></i> Logout
                                     </div>
@@ -232,8 +254,8 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu expand">
-                            <li><a href="table-basic.html" class="link"><span>Table Basic</span></a></li>
-                            <li class="active"><a href="table-datatables.html" class="link"><span>DataTables</span></a></li>
+                            <li><a href="table-basic.php" class="link"><span>Appointment</span></a></li>
+                            <li class="active"><a href="table-datatables.php" class="link"><span>client</span></a></li>
                         </ul>
                     </li>
                     <li class="menu-category">
@@ -288,14 +310,53 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                   
-                    <div class="card-body">
-                       
+            <div class="col-md-4"></div>
+            <div class="col-md-12">
+			 <div class="card">
+                    <div class="card-header">
+                        <h4>CLIENTS</h4>
                     </div>
-                </div>
-            </div>
+                <div class="card-body">
+                   <?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn =mysqli_connect($servername,$username,$password,$dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT * FROM client";
+$result = $conn->query($sql);
+ echo "<table class='table display nowrap' id='example'>";
+echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>Address</th>";
+if($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row["id"] . "</td>";
+        echo "<td>" . $row["name"] . "</td>";
+        echo "<td>" . $row["email"] . "</td>";
+		echo "<td>" . $row["address"] . "</td>";
+        echo "</tr>";
+    }
+	}
+	else {
+	echo "<tr><td colspan='3'>No records found</td></tr>";
+	}
+	echo "</table>";
+	$conn->close();
+	
+?>
+                   
+                       
+              </div>
+    </div>
+      </div>
+        </div>
+    </div>
+
+</div>
             <div class="col-md-4">
                 <div class="card">
                    

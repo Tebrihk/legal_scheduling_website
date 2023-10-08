@@ -160,7 +160,7 @@ if ( isset($_POST['submit']) ) {
 							<br>
 							 <div class="d-grid gap-2">
                         <button class="btn btn-primary icon-left" type="button"><i class="fab fa-facebook"></i>
-                            Sign up using Facebook</button>
+                            Sign up using Facebook</button> <br>
                         <button class="btn btn-danger icon-left" type="button"><i class="fab fa-google"></i>
                             Sign up using Google</button>
                     </div>

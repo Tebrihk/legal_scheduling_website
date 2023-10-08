@@ -1,4 +1,25 @@
+<?php
+    $servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	
+	
+    ob_start();
+	session_start();
+	
+	// if session is not set this will redirect to login page
+	if( !isset($_SESSION['user']) ) {
+		header("refresh:1;url=login.php");
+		exit;
+	}
+		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
+		
+		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
+			$row=mysqli_fetch_array($sql);
 
+?>       
 <!DOCTYPE html>
 <html lang="en">
 
@@ -167,7 +188,7 @@
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
                                 <span></span>
-                                <div>Admin</div>
+                                <div><?php echo $row['name']; ?></div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -234,7 +255,7 @@
                         </a>
                         <ul class="sub-menu expand">
                             <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
-                            <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
+                            <li><a href="table-datatables.php" class="link"><span>Clients</span></a></li>
                         </ul>
                     </li>
                     <li class="menu-category">
@@ -293,7 +314,7 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>DATABASE</h4>
+                        <h4>APPOINTMENTS</h4>
                     </div>
                 <div class="card-body">
                    <?php
