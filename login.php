@@ -1,6 +1,65 @@
 <?php
-session_start();
-?>
+	ob_start();
+	session_start();
+	
+	$servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	
+	$conn =mysqli_connect($servername,$username,$password,$dbname);
+	$error = false;
+	$emailError = false;
+	$passError = false;
+	
+	if( isset($_POST['login']) ) {	
+		
+		// prevent sql injections/ clear user invalid inputs
+		$email = trim($_POST['email']);
+		$email = strip_tags($email);
+		$email = htmlspecialchars($email);
+		
+		$password = trim($_POST['password']);
+		$password = strip_tags($password);
+		$password = htmlspecialchars($password);
+		
+		if(empty($email)){
+			$error = true;
+			$emailError = "Please enter your email address.";
+		} else if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+			$error = true;
+			$emailError = "Please enter valid email address.";
+		}
+		
+		if(empty($password)){
+			$error = true;
+			$passError = "Please enter your password.";
+		}
+		
+		
+		if (!$error) {
+			
+			$pass = hash('sha256', $password); // password hashing using SHA256
+		
+			$sql=mysqli_query($conn, "SELECT name,email,password FROM client WHERE email='$email'");
+			$row=mysqli_fetch_array($sql);
+			$count = mysqli_num_rows($sql); 
+			if ($count == 1 && $row['password']==$pass) {
+			$_SESSION['user'] = $row['name'];
+			 $errMSG = "Login succefully";
+			header("refresh:1;url=appointment.php");
+			} else {
+			
+			  $errMSG = "Incorrect Credentials, Try again...";
+			  header("refresh:1;url=login.php");
+			}
+				
+		}
+		
+	}
+		
+		
+	?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -42,16 +101,30 @@ session_start();
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="contact-form">
                         <div id="success"></div>
-                        <form action="appointment.php" method="POST">
+                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off" method="POST">
+						 <?php
+			if ( isset($errMSG) ) {
+				
+				?>
+				<div class="form-group">
+            	<div class="alert alert-danger">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
+                </div>
+            	</div>
+                <?php
+			}
+			?>
                             <div class="control-group">
                                 <input type="email" class="form-control p-4" id="email" name="email"
                                     placeholder="Your email address" required="required"
                                     data-validation-required-message="Please enter your email address" />
+									<span class="text-danger"><?php echo $emailError; ?></span>
                                 <p class="help-block text-danger"></p>
                             </div>
                             <input type="password" class="form-control p-4" id="password" name="password"
                                 placeholder="Your password" required="required"
                                 data-validation-required-message="Please enter your password" />
+								 <span class="text-danger"><?php echo $passError; ?></span>
 								<div class="form-check">
                                 <input type="checkbox" name="remember_me" id="remember" class="form-check-input">
                                 <label for="remember" class="form-check-label">Remember Me</label>
@@ -59,17 +132,18 @@ session_start();
                             <p class="help-block text-danger"></p>
                             <h3>Don't have an account? <a href="signup.php">sign up now</a></h3>
                     <div>
-                        <button class="btn btn-primary btn-block" type="submit" id="sendMessageButton">LOGIN</button>
+                        <button class="btn btn-primary btn-block" type="submit" id="sendMessageButton" name="login">LOGIN</button>
                     </div>
                     </form>
+					
                 </div>
-                <div class="col-lg-6" style="min-height: 400px; float:right;">
+               
+            </div>
+ <div class="col-lg-6" style="min-height: 400px; float:right;">
                     <div class="position-relative h-100 rounded overflow-hidden">
                         <p> <img src="img/feature.jpg" height="400" width="500" border="3px" /></p>
                     </div>
                 </div>
-            </div>
-
 
         </div>
     </div>
@@ -155,7 +229,7 @@ session_start();
             </div>
             <div class="col-md-6 text-center text-md-right">
                 <p class="m-0 text-white">Designed by <a class="font-weight-bold"
-                        href="11enterprise.wordpress.com">e11even enterpris</a></p>
+                        href="11enterprise.wordpress.com">e11even enterprise</a></p>
             </div>
         </div>
     </div>
@@ -178,42 +252,4 @@ session_start();
     <script src="js/main.js"></script>
 </body>
 </html>
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
-
-$conn =mysqli_connect($servername,$username,$password,$dbname);
-$email = $_POST['email'];
-$password = $_POST['password'];
-
-if (isset($_POST['remember_me'])) {
-    $cookie_name = "user";
-    $cookie_value = $_POST['email']; // You can store the username or user ID here.
-    $expiration = time() + (30 * 24 * 3600); // Set the expiration to a long time (e.g., 30 days).
-    setcookie($cookie_name, $cookie_value, $expiration, "/");
-}
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}else
-{
-$sql = mysqli_query($conn, "SELECT email, password FROM client WHERE email = '$email' and password='$password'");
-$row = mysqli_fetch_array($sql);
-if (is_array($row)) {
-$_SESSION['loggedin'] = true;
-      $_SESSION['email'] = $name;
-   echo " successfully logged in"; 
-   header("Location: appointment.php");
-   
-} else {
-
-   echo "account not found";
-   header("Location: login.php");
-}
-}
-$conn->close();
-
-?>
+<?php ob_end_flush(); ?>

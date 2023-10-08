@@ -1,23 +1,24 @@
-
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
+    $servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	
+	
+    ob_start();
+	session_start();
+	
+	// if session is not set this will redirect to login page
+	if( !isset($_SESSION['user']) ) {
+		header("refresh:1;url=login.php");
+		exit;
+	}
+		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
+		
+		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+		$sql=mysqli_query($conn,"SELECT * FROM client WHERE name='$user'");
+			$row=mysqli_fetch_array($sql);
 
-$email = $_POST['email'];
-
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-$sql = mysqli_query($conn, "SELECT name FROM client WHERE email = '$email'");
-$result = mysqli_fetch_array($sql);
-if (is_array($result) === true) {
-
-    $name = $result["name"];
-    echo $name;
-} else {
-    $name = "User not found";
-}
-$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +88,7 @@ $conn->close();
                                 <div class="dropdown-menu rounded-0 m-0">
 
                                     <a href="#" class="dropdown-item">Notification</a>
-                                    <a href="href="index.html" class="dropdown-item">Log out</a>
+                                    <a href="logout.php" class="dropdown-item">Log out</a>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +110,7 @@ $conn->close();
                             <form action="#" method="POST">
 							
                                 <div class="form-group" >
-                                 <input type="text" name="name"  class="form-control border-0 p-4" value="<?php echo $name; ?>" style="width:355px;" readonly />
+                                 <input type="text" name="name"  class="form-control border-0 p-4" value="<?php echo $row['name']; ?>" style="width:355px;" readonly />
                                 </div>
 								 <div class="form-group">
                                     <select class="custom-select border-0 px-4" style="height: 47px; width:355px; " name="category">
@@ -267,34 +268,3 @@ $conn->close();
 </body>
 
 </html>
-<?php
-session_start();
-extract($_POST);
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
-
-$conn =mysqli_connect($servername,$username,$password,$dbname);
-$name = $_POST['name'];
-$category = $_POST['category'];
-$complaint = $_POST['complaint'];
-$date = $_POST['date'];
-$time = $_POST['time'];
-
-$sql = "insert into appointment (name,category,complaint,date,time) values ('$name','$category','$complaint','$date','$time')";
-				
-			if ($conn->query($sql) === true) {
-				if (isset($_COOKIE['user'])) {
-    $email = $_COOKIE['user'];
-    // Perform an authentication check using the username retrieved from the cookie.
-    // Log the user in if the username is valid.
-}
-				
-			} else {
-				$errTyp = "danger";
-				$errMSG = "Something went wrong, try again later...";	
-			}	
-$conn->close();
-
-?>

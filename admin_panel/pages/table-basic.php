@@ -233,8 +233,8 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu expand">
-                            <li class="active"><a href="table-basic.php" class="link"><span>Table Basic</span></a></li>
-                            <li><a href="table-datatables.html" class="link"><span>DataTables</span></a></li>
+                            <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
+                            <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
                         </ul>
                     </li>
                     <li class="menu-category">
@@ -283,28 +283,57 @@
             <div class="col-md-4">
                
            
-                </div>
+          </div>
                     <div class="card-body">
                         <div id="apex-chart-bar"></div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                   
-                    <div class="card-body">
-                       
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+            <div class="col-md-12">
+			 <div class="card">
+                    <div class="card-header">
+                        <h4>DATABASE</h4>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                   
+                <div class="card-body">
+                   <?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn =mysqli_connect($servername,$username,$password,$dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT * FROM appointment";
+$result = $conn->query($sql);
+ echo "<table class='table display nowrap' id='example'>";
+echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th></tr>";
+if($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row["id"] . "</td>";
+        echo "<td>" . $row["name"] . "</td>";
+        echo "<td>" . $row["category"] . "</td>";
+		echo "<td>" . $row["complaint"] . "</td>";
+		echo "<td>" . $row["date"] . "</td>";
+		echo "<td>" . $row["time"] . "</td>";
+        echo "</tr>";
+    }
+	}
+	else {
+	echo "<tr><td colspan='3'>No records found</td></tr>";
+	}
+	echo "</table>";
+	$conn->close();
+	
+?>
                    
                        
-                    </div>
-                </div>
-            </div>
+              </div>
+    </div>
+      </div>
         </div>
     </div>
 
@@ -369,7 +398,7 @@
         </div> 
 
         <footer>
-            Copyright © 2022 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1"> Mulai Dari Null </a> <span> . All rights Reserved</span>
+            Copyright © 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>

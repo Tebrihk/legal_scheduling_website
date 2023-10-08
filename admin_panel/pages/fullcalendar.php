@@ -267,8 +267,8 @@ $conn->close();
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu ">
-                            <li><a href="table-basic.php" class="link"><span>Table Basic</span></a></li>
-                            <li><a href="table-datatables.html" class="link"><span>DataTables</span></a></li>
+                            <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
+                            <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
                         </ul>
                     </li>
                     <li class="menu-category">
@@ -305,11 +305,16 @@ $conn->close();
                             </p>
                             <div class='fc-event py-1 mb-1 fc-h-event fc-daygrid-event fc-daygrid-block-event'>
                               <div class='fc-event-main'>NAME: <br><?php echo $name;?> <br>COMPLAINT: <br> <?php echo $complaint;?> <br>DATE: <br><?php echo $date;?> </div>
+							  
+                            </div>
+							<p>
+                              <input type='checkbox' class="form-check-input" id='drop-remove' />
+                              <label for='drop-remove'>remove after drop</label>
+                            </p>
                             </div>
                           </div>
                     </div>
                 </div>
-            </div>
         </div>
 
         <div class="settings">
@@ -454,20 +459,11 @@ $conn->close();
             dayMaxEvents: true,
         });
         calendar.render();
-        calendar.setOption('locale', 'id');
+       
 
 
       });
 </script>
-<script>
-        function hello(){
-            var c = document.getElementById("notification").value
-           c.addEventListener('click', function() {
-    // Change the text of the paragraph
-    paragraph.textContent = 0;
-});
-         }
-    </script>
 </body>
 
 </html>

@@ -1,5 +1,4 @@
 <?php
-session_start();
 extract($_POST);
 $servername = "localhost";
 $username = "root";
@@ -16,14 +15,10 @@ $time = $_POST['time'];
 $sql = "insert into appointment (name,category,complaint,date,time) values ('$name','$category','$complaint','$date','$time')";
 				
 			if ($conn->query($sql) === true) {
-				$errTyp = "success";
-				$errMSG = "Successfully registered";
-				header("Location: appointment.php");
+				header("Location: team.html");
 				
 			} else {
-				$errTyp = "danger";
-				$errMSG = "Something went wrong, try again later...";	
+				
 			}	
 $conn->close();
-
 ?>

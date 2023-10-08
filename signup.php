@@ -1,6 +1,82 @@
 <?php
-include 'DBConnection.php';
+
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn = new mysqli($servername,$username,$password,$dbname);
+$error = false;
+$nameError = false;
+	$emailError = false;
+
+
+if ( isset($_POST['submit']) ) {
+        $name = trim($_POST['name']);
+		$name = strip_tags($name);
+		$name = htmlspecialchars($name);
+		
+		$email = trim($_POST['email']);
+		$email = strip_tags($email);
+		$email = htmlspecialchars($email);
+		
+		$address = trim($_POST['address']);
+		$address = strip_tags($address);
+		$address = htmlspecialchars($address);
+		
+		$password = trim($_POST['password']);
+		$password = strip_tags($password);
+		$password = htmlspecialchars($password);
+		
+		//additonal validation 
+		if (empty($name)) {
+			$error = true;
+			$nameError = "Please enter your full name.";
+		} else if (strlen($name) < 3) {
+			$error = true;
+			$nameError = "Name must have atleat 3 characters.";
+		} else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
+			$error = true;
+			$nameError = "Name must contain alphabets and space.";
+		}
+		
+		//basic email validation
+		if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+			$error = true;
+			$emailError = "Please enter valid email address.";
+		} else {
+			// check email exist or not
+			$sql1 = mysqli_query($conn, "SELECT email FROM client WHERE email='$email'");
+			$count = mysqli_num_rows($sql1);
+			if($count!=0){
+				$error = true;
+				$emailError = "the email you provided has already been used";
+			}
+		}
+		//this is the hashing of the password for security
+		$pass = hash('sha256', $password);
+		
+		if( !$error ) {
+		
+		$sql =mysqli_query($conn, "insert into client (name,email,address,password) values ('$name','$email','$address','$pass')");
+        if ($conn->query($sql) === true)
+           {
+                $errTyp = "success";
+				$errMSG = "Successfully registered";
+				
+				unset($name);
+				unset($email);
+				unset($address);
+				unset($password);
+				header("Location: login.php");
+				
+					}else{
+						header("Location: login.php");
+							}
+					}
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,14 +117,28 @@ include 'DBConnection.php';
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="contact-form">
                         <div id="success"></div>
-                        <form id="contactForm" action="signup_check.php" method="POST">
+                        <form id="contactForm" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" autocomplete="off">
+						<?php
+			if ( isset($errMSG) ) {
+				
+				?>
+				<div class="form-group">
+            	<div class="alert alert-<?php echo ($errTyp=="success") ? "success" : $errTyp; ?>">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
+                </div>
+            	</div>
+                <?php
+			}
+			?>
                                 <div class="control-group">
                                     <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
                                     <p class="help-block text-danger"></p>
+									<span class="text-danger"><?php echo $nameError; ?></span>
                                 </div>
 								<div class="control-group">
                                     <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your email address" required="required" data-validation-required-message="Please enter your email address" />
                                     <p class="help-block text-danger"></p>
+									 <span class="text-danger"><?php echo $emailError; ?></span>
                                 </div>
                             <div class="control-group">
                                 <input type="text" class="form-control p-4" id="address" name="address" placeholder="your address" required="required" data-validation-required-message="Please enter address" />
@@ -64,8 +154,16 @@ include 'DBConnection.php';
                                 </div>
                              <h3>Already have an account? <a href="login.php">Login now</a></h3>
                             <div>
-                                <button class="btn btn-primary btn-block" type="submit" id="sendMessageButton" onClick="hello()">SIGN UP</button>
+                                <button class="btn btn-primary btn-block" type="submit" id="sendMessageButton" onClick="hello()" name="submit">SIGN UP</button>
+								
                             </div>
+							<br>
+							 <div class="d-grid gap-2">
+                        <button class="btn btn-primary icon-left" type="button"><i class="fab fa-facebook"></i>
+                            Sign up using Facebook</button>
+                        <button class="btn btn-danger icon-left" type="button"><i class="fab fa-google"></i>
+                            Sign up using Google</button>
+                    </div>
                         </form>
                     </div>
                 </div>
@@ -191,3 +289,4 @@ include 'DBConnection.php';
 </body>
 
 </html>
+<?php ob_end_flush(); ?>
