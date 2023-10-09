@@ -46,7 +46,7 @@
 			$count = mysqli_num_rows($sql); 
 			if ($count == 1 && $row['password']==$pass) {
 			$_SESSION['user'] = $row['name'];
-			 $errMSG = "Login succefully";
+			 $errMSG = "Login successful";
 			header("refresh:1;url=index.php");
 			} else {
 			

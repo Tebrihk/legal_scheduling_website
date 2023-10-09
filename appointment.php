@@ -20,6 +20,52 @@
 			$row=mysqli_fetch_array($sql);
 
 ?>
+
+<?php 
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn = new mysqli($servername,$username,$password,$dbname);
+
+
+if ( isset($_POST['submit']) ) {
+        $name = trim($_POST['name']);
+		$name = strip_tags($name);
+		$name = htmlspecialchars($name);
+		
+		$category = trim($_POST['category']);
+		$category = strip_tags($category);
+		$category = htmlspecialchars($category);
+		
+		$complaint = trim($_POST['complaint']);
+		$complaint = strip_tags($complaint);
+		$complaint = htmlspecialchars($complaint);
+		
+		$date = trim($_POST['date']);
+		$date = strip_tags($date);
+		$date = htmlspecialchars($date);
+		
+		$time = trim($_POST['time']);
+		$time = strip_tags($time);
+		$time = htmlspecialchars($time);
+		
+		
+		if( !$error ) {
+		
+		$sql =mysqli_query($conn, "insert into appointment (name,category,complaint,date,time) values ('$name','$category','$complaint','$date','$time')");
+        if ($conn->query($sql) === true)
+           {
+                
+				header("Location: notification.html");
+				
+					}else{
+						header("Location: login.php");
+							}
+					}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,6 +160,7 @@
                                 </div>
 								 <div class="form-group">
                                     <select class="custom-select border-0 px-4" style="height: 47px; width:355px; " name="category">
+									<option value="#">Select Category</option>
                                         <option value="Civil law">Civil law</option>
                                         <option value="Family law">Family law</option>
                                         <option value="Corperate law">Corperate law</option>
@@ -122,7 +169,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <textarea placeholder="Your Complaint" style="height:250px; width:355px" name="complaint"></textarea>
+                                    <textarea placeholder="Your Complaint" style="height:250px; width:355px" name="complaint" required></textarea>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-6">
@@ -148,7 +195,7 @@
                                 </div>
 
                                 <div>
-                                    <button class="btn btn-primary btn-block border-0 py-3" type="submit">Get An
+                                    <button class="btn btn-primary btn-block border-0 py-3" type="submit" name="submit">Request
                                         Appointment</button>
                                 </div>
                             </form>
