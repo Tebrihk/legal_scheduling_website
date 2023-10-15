@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		header("Location:login.php");
 		exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
@@ -254,23 +254,10 @@
                         <ul class="sub-menu ">
                             <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
+							<li><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li><li ><a href="attorney_table.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
-                    <li class="menu-category">
-                        <span class="text-uppercase">Extra</span>
-                    </li>
-                    <li>
-                        <a href="charts.html" class="link">
-                            <i class="ti-bar-chart"></i>
-                            <span>Charts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="fullcalendar.php" class="link">
-                            <i class="ti-calendar"></i>
-                            <span>Calendar</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
         </nav>        

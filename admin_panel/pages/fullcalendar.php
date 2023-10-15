@@ -290,7 +290,7 @@ $conn->close();
                         </a>
                         <ul class="sub-menu ">
                             <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
-                            <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
+                            <li><a href="table-datatables.php" class="link"><span>Clients</span></a></li>
                         </ul>
                     </li>
                     <li class="menu-category">
@@ -313,12 +313,44 @@ $conn->close();
         </nav>        
         <div class="main-content">
             <div class="title">
-                Full Calendar
+               SET ATTORNEY
             </div>
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-md-10">
-                        <div id="calendar"></div>
+                        <?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn =mysqli_connect($servername,$username,$password,$dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT * FROM appointment";
+$result = $conn->query($sql);
+ echo "<table class='table display nowrap' id='example'>";
+echo "<tr><th>ID</th><th>category</th><th>complaint</th><th>Attorney</th><th>Push</th>";
+if($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row["id"] . "</td>";
+        echo "<td>" . $row["category"] . "</td>";
+        echo "<td>" . $row["complaint"] . "</td>";
+		echo "<td>";	echo "<td>";
+		echo "<td>"; echo"<button name='push'>push</button>"; echo "<td>";
+        echo "</tr>";
+    }
+	}
+	else {
+	echo "<tr><td colspan='3'>No records found</td></tr>";
+	}
+	echo "</table>";
+	$conn->close();
+	
+?>
+				
                     </div>
                     <div class="col-md-2">
                         <div id='external-events'>
@@ -417,13 +449,15 @@ $conn->close();
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+		 var calendarE2 = document.getElementById('example');
         const today = new Date()
 
         var containerEl = document.getElementById('external-events');
+		var containerE2 = document.getElementById('external-events');
 
         var checkbox = document.getElementById('drop-remove');
 
-        new FullCalendar.Draggable(containerEl, {
+        new FullCalendar.Draggable(containerE2, {
             itemSelector: '.fc-event',
             eventData: function(eventEl) {
                 return {
@@ -432,7 +466,7 @@ $conn->close();
             }
         });
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+        var example = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
             initialView: 'dayGridMonth',
             editable: true,
@@ -480,7 +514,7 @@ $conn->close();
             selectable:true,
             dayMaxEvents: true,
         });
-        calendar.render();
+        example.render();
        
 
 

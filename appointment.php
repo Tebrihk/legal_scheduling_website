@@ -20,51 +20,34 @@
 			$row=mysqli_fetch_array($sql);
 
 ?>
-
-<?php 
+<?php
 $servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+	$conn = new mysqli($servername,$username,$password,$dbname);
 
-$conn = new mysqli($servername,$username,$password,$dbname);
+if (isset($_POST['submit'])) {
+    $name = trim($_POST['name']);
+    $category = trim($_POST['category']);
+    $complaint = trim($_POST['complaint']);
+    $date = trim($_POST['date']);
+    $time = trim($_POST['time']);
+    $status = 'pending';
 
+    $stmt = $conn->prepare("INSERT INTO appointment (name, category, complaint, date, time, status) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $name, $category, $complaint, $date, $time, $status);
 
-if ( isset($_POST['submit']) ) {
-        $name = trim($_POST['name']);
-		$name = strip_tags($name);
-		$name = htmlspecialchars($name);
-		
-		$category = trim($_POST['category']);
-		$category = strip_tags($category);
-		$category = htmlspecialchars($category);
-		
-		$complaint = trim($_POST['complaint']);
-		$complaint = strip_tags($complaint);
-		$complaint = htmlspecialchars($complaint);
-		
-		$date = trim($_POST['date']);
-		$date = strip_tags($date);
-		$date = htmlspecialchars($date);
-		
-		$time = trim($_POST['time']);
-		$time = strip_tags($time);
-		$time = htmlspecialchars($time);
-		
-		
-		if( !$error ) {
-		
-		$sql =mysqli_query($conn, "insert into appointment (name,category,complaint,date,time) values ('$name','$category','$complaint','$date','$time')");
-        if ($conn->query($sql) === true)
-           {
-                
-				header("Location: notification.html");
-				
-					}else{
-						header("Location: login.php");
-							}
-					}
+    if ($stmt->execute()) {
+        header("Location: notification/index.php");
+    } else {
+        // Handle the error, for example:
+        echo "Error: " . $stmt->error;
+    }
+    $stmt->close();
 }
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,6 +67,31 @@ if ( isset($_POST['submit']) ) {
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet">
+	<style type="text/css">
+#notification {
+  background-color: #555;
+  color: white;
+  text-decoration: none;
+  padding: 15px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+#notification:hover {
+  background: red;
+}
+
+#notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  }
+</style>
 </head>
 
 <body>
@@ -133,7 +141,9 @@ if ( isset($_POST['submit']) ) {
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
                                 <div class="dropdown-menu rounded-0 m-0">
 
-                                    <a href="#" class="dropdown-item">Notification</a>
+                                    <a href="notification/index.php" class="dropdown-item" id="notification"><span>Notification</span>
+  <span class="badge">3</span></a>
+									
                                     <a href="logout.php" class="dropdown-item">Log out</a>
                                 </div>
                             </div>

@@ -96,21 +96,49 @@ img {
   font-weight: 600;
   font-style: normal;
 }
+.chat1 {    position: relative;
+    display: inline-block;
+    width: 40vw;
+    min-width: 400px;
+    max-width: 80%;
+    animation: popFromBottom 0.5s ease-in-out;
+}
+.message1 {    background: #ffe271;
+    padding: 2vmin 5vmin 2vmin 10vmin;
+    border-radius: 0px 50px 50px 0px;
+    font-size: 3vmin;
+    text-align: left;
+}
+.profile1 {    display:  inline-block;
+    width: 22vmin;
+    height: 22vmin;
+    border-radius:  50%;
+    overflow:  hidden;
+    position: absolute;
+    left: -16vmin;
+    top: -1vmin;
+    border: 1vmin solid #fff;
+}
+.user1 {  text-align: left;
+  padding: 2px 30px 5px 60px;
+  border-radius: 0px 0px 20px;
+  font-size: 3.2vmin;
+  background: #fff;
+  color: #83aebd;
+  display: inline-block;
+  float: left;
+  font-weight: 600;
+  font-style: normal;
+}
 </style>
 </head>
 
 <body>
 <div class="body"></div>
-<div class="chat">
-  <div class="profile">
-      <img src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=a8ccd69bd6cc884f728949673c6829cf' alt=''>
-  </div>
-  <div class="message">
-     Loren ipsum dolen sit a mor a mor a mor whatever, Loren ipsum dolen sit a mor a mor a mor whatever.
-  </div>
-  <div class="user">
-     John Doe
-  </div>
+<div class="chat1">
+  <div class="profile1"> <img src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=a8ccd69bd6cc884f728949673c6829cf' alt='' /> </div>
+  <div class="message1"> Loren ipsum dolen sit a mor a mor a mor whatever, Loren ipsum dolen sit a mor a mor a mor whatever. </div>
+  <div class="user1"> John Doe </div>
 </div>
 </body>
 </html>

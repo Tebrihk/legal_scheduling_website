@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		header("Location:login.php");
 		exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
@@ -27,7 +27,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Tables </title>
+    <title>Clients</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -240,7 +240,7 @@
             <div class="sidebar-content">
                 <ul>
                     <li>
-                        <a href="index.html" class="link">
+                        <a href="index.php" class="link">
                             <i class="ti-home"></i>
                             <span>Dashboard</span>
                         </a>
@@ -256,23 +256,11 @@
                         <ul class="sub-menu expand">
                             <li><a href="table-basic.php" class="link"><span>Appointment</span></a></li>
                             <li class="active"><a href="table-datatables.php" class="link"><span>client</span></a></li>
+							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+<li ><a href="assign.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
-                    <li class="menu-category">
-                        <span class="text-uppercase">Extra</span>
-                    </li>
-                    <li>
-                        <a href="charts.html" class="link">
-                            <i class="ti-bar-chart"></i>
-                            <span>Charts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="fullcalendar.php" class="link">
-                            <i class="ti-calendar"></i>
-                            <span>Calendar</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
         </nav>        

@@ -51,7 +51,7 @@
 			} else {
 			
 			  $errMSG = "Incorrect Credentials, Try again...";
-			  header("refresh:1;url=auth-login.php");
+			  header("refresh:1;url=login.php");
 			}
 				
 		}

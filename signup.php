@@ -145,7 +145,7 @@ if ( isset($_POST['submit']) ) {
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="control-group">
-                                    <input type="password" class="form-control p-4" id="password" name="password" placeholder="Your Name password" required="required" data-validation-required-message="Please enter your password" />
+                                    <input type="password" class="form-control p-4" id="password" name="password" placeholder="Your password" required="required" data-validation-required-message="Please enter your password" />
                                     <p class="help-block text-danger"></p>
                                 </div>
 								 <div class="control-group">
@@ -158,12 +158,7 @@ if ( isset($_POST['submit']) ) {
 								
                             </div>
 							<br>
-							 <div class="d-grid gap-2">
-                        <button class="btn btn-primary icon-left" type="button"><i class="fab fa-facebook"></i>
-                            Sign up using Facebook</button> <br>
-                        <button class="btn btn-danger icon-left" type="button"><i class="fab fa-google"></i>
-                            Sign up using Google</button>
-                    </div>
+							 
                         </form>
                     </div>
                 </div>

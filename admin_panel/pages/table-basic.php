@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		header("Location:login.php");
 		exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
@@ -27,7 +27,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Basic </title>
+    <title>Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -255,24 +255,12 @@
                         </a>
                         <ul class="sub-menu expand">
                             <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
-                            <li><a href="table-datatables.php" class="link"><span>Clients</span></a></li>
+                            <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
+							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+							<li ><a href="assign.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
-                    <li class="menu-category">
-                        <span class="text-uppercase">Extra</span>
-                    </li>
-                    <li>
-                        <a href="charts.html" class="link">
-                            <i class="ti-bar-chart"></i>
-                            <span>Charts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="fullcalendar.php" class="link">
-                            <i class="ti-calendar"></i>
-                            <span>Calendar</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
         </nav>        
@@ -330,7 +318,7 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM appointment";
 $result = $conn->query($sql);
  echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th></tr>";
+echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>AOR</th><th>push</th></tr>";
 if($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
@@ -340,6 +328,11 @@ if($result->num_rows > 0) {
 		echo "<td>" . $row["complaint"] . "</td>";
 		echo "<td>" . $row["date"] . "</td>";
 		echo "<td>" . $row["time"] . "</td>";
+		echo "<td>" . $row["status"] . "</td>";
+		echo "<td>" . $row["AOR"] . "</td>";
+		echo "<td>";
+		echo "<a href='assign.php?id=" . $row["id"] . "'><button>PUSH</button></a>";
+		echo "</td>";
         echo "</tr>";
     }
 	}
