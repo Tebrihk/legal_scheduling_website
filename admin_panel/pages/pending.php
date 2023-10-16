@@ -37,7 +37,7 @@ if (isset($_POST['push'])) {
         if (mysqli_stmt_execute($stmt)) {
             echo "Record updated successfully.";
             header("refresh:1;url=table-basic.php");
-        } else {
+			    } else {
             echo "Record not updated.";
             header("refresh:1;url=assign-attorney_table.php");
         }
@@ -54,12 +54,12 @@ if (isset($_POST['push'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $complaint = $_POST['complaint'];
-	 $ROA = $_POST['ROA'];
+	 $AOR= $_POST['AOR'];
     $date = $_POST['date'];
     $time = $_POST['time'];
     $status = 'pending';
 	
-	$sql =mysqli_query($conn, "insert into pend (name,complaint,ROA,date,time,status) values ('$name','$complaint','$ROA','$date','$time','$status')");
+	$sql =mysqli_query($conn, "insert into pend (name,complaint,AOR,date,time,status) values ('$name','$complaint','$AOR','$date','$time','$status')");
 	}
 
 ?>

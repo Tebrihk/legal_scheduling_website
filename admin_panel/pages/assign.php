@@ -263,7 +263,7 @@
 					$result = $conn->query($sql);
 					?>
 					
-					<select name="ROA" style="width:300px; height:50px;">
+					<select name="AOR" style="width:300px; height:50px;">
 					<?php
 					while ($row = $result->fetch_assoc()) {
 						echo "<option value='" . $row['name'] . "'>" . $row['name'] . " - " . $row['practise'] . "</option>";
@@ -353,7 +353,7 @@
         </div> 
 
         <footer>
-            Copyright © 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
+            Copyright ï¿½ 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>

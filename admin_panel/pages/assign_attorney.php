@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		header("Location:login.php");
 		exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
@@ -248,14 +248,14 @@
 									 <br /><input type="text" name="password" value="<?php echo $result['time']; ?>" style="width:300px; height:50px;"  /><br />
 									  <br /><select name="ROA" style="width:300px; height:50px;" >
 								<br />	<option >Attorney</option>
-                                        <option value="Civil law">Civil law</option>
+                                       
                                          <?php
     while ($row = $lawyer->fetch_assoc()) {
         echo "<option value='" . $row['name'] . "'>" . $row['name'] . "</option>";
     }
     ?>
                                     </select><br />
-								<br /> <input type="submit" name="submit" value="PUSH"  style=" background-color:#33CCFF; color:#FFFFFF; width:90px; 95px; "/>
+								<br /> <input type="submit" name="push" value="PUSH"  style=" background-color:#33CCFF; color:#FFFFFF; width:90px; 95px; "/>
 								</form>
               </div>
     </div>

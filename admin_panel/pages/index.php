@@ -19,7 +19,76 @@
 		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
 			$row=mysqli_fetch_array($sql);
 
-?>                                        
+?>   
+
+<?php
+	$servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+
+// Create a connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to count entries
+$sql = "SELECT COUNT(*) AS entry_count FROM client"; // Replace your_table_name
+
+// Execute the query
+$result1 = $conn->query($sql);
+
+if ($result1->num_rows > 0) {
+    // Fetch the result
+    $row1 = $result1->fetch_assoc();
+
+    // Access the count
+    $entryCount = $row1['entry_count'];
+} else {
+    echo "No entries found.";
+}
+
+// Close the connection
+$conn->close();
+
+?>              
+<?php
+	$servername = "localhost";
+	$username = "root";
+	$password = "mysql";
+	$dbname = "legal_scheduling";
+
+// Create a connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to count entries
+$sql1 = "SELECT COUNT(*) AS entry_count FROM appointment"; // Replace your_table_name
+
+// Execute the query
+$result2 = $conn->query($sql1);
+
+if ($result2->num_rows > 0) {
+    // Fetch the result
+    $row2 = $result2->fetch_assoc();
+
+    // Access the count
+    $entryCount2 = $row2['entry_count'];
+} else {
+    echo "No entries found.";
+}
+
+// Close the connection
+$conn->close();
+
+?>                                     
 <!DOCTYPE html>
 <html lang="en">
 
@@ -254,7 +323,7 @@
                         <ul class="sub-menu ">
                             <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
-							<li><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li><li ><a href="attorney_table.php" class="link"><span>Assign</span></a></li>
+							<li><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
                         </ul>
                     </li>
                     
@@ -284,17 +353,17 @@
                     </div>
                     <div class="card-body">
                         <div class="progress-wrapper">
-                            <h4>Progress 25%</h4>
+                            <h4> Clients <?php echo $entryCount; ?></h4>
                             <div class="progress progress-bar-small">
-                                <div class="progress-bar progress-bar-small" style="width: 25%" role="progressbar"
+                                <div class="progress-bar progress-bar-small" style="width: <?php echo $entryCount; ?>%" role="progressbar"
                                     aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>
                         </div>
                         <div class="progress-wrapper">
-                            <h4>Progress 45%</h4>
+                            <h4>Appointments <?php echo $entryCount2; ?></h4>
                             <div class="progress progress-bar-small">
-                                <div class="progress-bar progress-bar-small bg-pink" style="width: 45%"
+                                <div class="progress-bar progress-bar-small bg-pink" style="width: <?php echo $entryCount2; ?>%"
                                     role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>

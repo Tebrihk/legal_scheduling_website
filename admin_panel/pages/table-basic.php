@@ -257,7 +257,6 @@
                             <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
-							<li ><a href="assign.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
                     
@@ -318,7 +317,7 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM appointment";
 $result = $conn->query($sql);
  echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>AOR</th><th>push</th></tr>";
+echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
 if($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
@@ -329,7 +328,6 @@ if($result->num_rows > 0) {
 		echo "<td>" . $row["date"] . "</td>";
 		echo "<td>" . $row["time"] . "</td>";
 		echo "<td>" . $row["status"] . "</td>";
-		echo "<td>" . $row["AOR"] . "</td>";
 		echo "<td>";
 		echo "<a href='assign.php?id=" . $row["id"] . "'><button>PUSH</button></a>";
 		echo "</td>";

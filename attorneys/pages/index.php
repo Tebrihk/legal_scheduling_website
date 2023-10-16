@@ -13,6 +13,17 @@
 		header("Location:login.php");
 		exit;
 	}
+	
+	$timeout = 300;
+
+// Check for the user's last activity time
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout) {
+    // User has been inactive for too long, destroy the session and log them out
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    header("Location:login.php"); // Redirect to the login page
+    exit;
+	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
 		
 		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
@@ -176,7 +187,7 @@ if($result->num_rows > 0) {
 		echo "<td>" . $row["AOR"] . "</td>";
 		echo "<td>";
 		echo "<a href='assign.php?id=" . $row["id"] . "'><button>ADJUST</button></a>";
-		echo "<a href='assign.php?id=" . $row["id"] . "'><button>ACCEPT</button></a>";
+		echo "<a href='accepted.php?id=" . $row["id"] . "'><button>ACCEPT</button></a>";
 		echo "</td>";
         echo "</tr>";
     }

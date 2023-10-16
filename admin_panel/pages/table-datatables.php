@@ -257,7 +257,6 @@
                             <li><a href="table-basic.php" class="link"><span>Appointment</span></a></li>
                             <li class="active"><a href="table-datatables.php" class="link"><span>client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
-<li ><a href="assign.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
                     

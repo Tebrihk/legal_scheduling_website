@@ -10,8 +10,22 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		 header("Location:login.php");
 		exit;
+	}
+	if( isset($_SESSION['recordInserted']) ) {
+		 echo" <span class='badge' style='visibility:visible;'>1</span>";
+	}
+	
+	$timeout = 300;
+
+// Check for the user's last activity time
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout) {
+    // User has been inactive for too long, destroy the session and log them out
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    header("Location:login.php"); // Redirect to the login page
+    exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
 		
@@ -39,9 +53,11 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("ssssss", $name, $category, $complaint, $date, $time, $status);
 
     if ($stmt->execute()) {
+	 $errMSG = "Login successful";
         header("Location: notification/index.php");
     } else {
-        // Handle the error, for example:
+        // Handle the error
+		 $errMSG = "not successful";
         echo "Error: " . $stmt->error;
     }
     $stmt->close();
@@ -142,7 +158,7 @@ $conn->close();
                                 <div class="dropdown-menu rounded-0 m-0">
 
                                     <a href="notification/index.php" class="dropdown-item" id="notification"><span>Notification</span>
-  <span class="badge">3</span></a>
+  <span class="badge" style="visibility:hidden;">1</span></a>
 									
                                     <a href="logout.php" class="dropdown-item">Log out</a>
                                 </div>
@@ -164,7 +180,18 @@ $conn->close();
                         <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
                             <h1 class="text-center text-white mb-4">Get An Appointment</h1>
                             <form action="#" method="POST">
-							
+							 <?php
+			if ( isset($errMSG) ) {
+				
+				?>
+				<div class="form-group">
+            	<div class="alert alert-danger">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
+                </div>
+            	</div>
+                <?php
+			}
+			?>
                                 <div class="form-group" >
                                  <input type="text" name="name"  class="form-control border-0 p-4" value="<?php echo $row['name']; ?>" style="width:355px;" readonly />
                                 </div>
@@ -323,5 +350,5 @@ $conn->close();
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
 </html>
+<?php ob_end_flush(); ?>

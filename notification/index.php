@@ -13,10 +13,21 @@
 		header("refresh:1;url=login.php");
 		exit;
 	}
+	$timeout = 300;
+
+// Check for the user's last activity time
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout) {
+    // User has been inactive for too long, destroy the session and log them out
+    session_unset(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    header("Location:login.php"); // Redirect to the login page
+    exit;
+	}
+	
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
 		
 		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-		$sql=mysqli_query($conn,"SELECT * FROM appointment WHERE name='$user'");
+		$sql=mysqli_query($conn,"SELECT * FROM appointment WHERE name='$user' ORDER BY id DESC LIMIT 1");
 			$row=mysqli_fetch_array($sql);
 
 ?>
@@ -38,7 +49,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli
 $user = mysqli_real_escape_string($conn, $_SESSION['user']);
 
 // Prepare and execute the SQL query to retrieve the second appointment for the user
-$sql = "SELECT * FROM appointment WHERE name = ? LIMIT 1 OFFSET 1";
+$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
 $stmt = mysqli_prepare($conn, $sql);
 
 if ($stmt) {
@@ -75,7 +86,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli
 $user = mysqli_real_escape_string($conn, $_SESSION['user']);
 
 // Prepare and execute the SQL query to retrieve the third appointment for the user
-$sql2 = "SELECT * FROM appointment WHERE name = ? LIMIT 1 OFFSET 2";
+$sql2 = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
 $stmt = mysqli_prepare($conn, $sql2);
 
 if ($stmt) {
@@ -119,38 +130,14 @@ mysqli_close($conn);
     <link href="css/style.css" rel="stylesheet">
 	<link href="../css/style.css" rel="stylesheet">
 	<link href="../css/style.min.css" rel="stylesheet">
-	<style type="text/css">
-#notification {
-  background-color: #555;
-  color: white;
-  text-decoration: none;
-  padding: 15px 26px;
-  position: relative;
-  display: inline-block;
-  border-radius: 2px;
-}
 
-#notification:hover {
-  background: red;
-}
-
-#notification .badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  padding: 5px 10px;
-  border-radius: 50%;
-  background: red;
-  color: white;
-  }
-</style>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3 bg-secondary d-none d-lg-block">
-                <a href="index.html"
+                <a href="../appointment.php"
                     class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
                     <h1 class="m-0 display-4 text-primary text-uppercase">Justice</h1>
                 </a>
@@ -193,8 +180,8 @@ mysqli_close($conn);
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
                                 <div class="dropdown-menu rounded-0 m-0">
 
-                                    <a href="notification/index.php" class="dropdown-item" id="notification"><span>Notification</span>
-  <span class="badge">3</span></a>
+                                    <a href="../appointment.php" class="dropdown-item" ><span>Appointment</span>
+ </a>
 									
                                     <a href="logout.php" class="dropdown-item">Log out</a>
                                 </div>
@@ -245,22 +232,7 @@ mysqli_close($conn);
         </div>
         <div class="notification-list_feature-img"> <img src="images/features/random3.jpg" alt="Feature image"> </div>
       </div>
-      <div class="notification-list notification-list--read">
-        <div class="notification-list_content">
-          <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
-          <div class="notification-list_detail">
-            <p><b>Bittu</b> reacted to your post</p>
-            <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, dolorem.</p>
-            <p class="text-muted"><small>10 mins ago</small></p>
-          </div>
-        </div>
-        
-        
-       
-      </div>
-    </div>
-   
-  </div>
+      
 </section>
   
     <!-- Appointment End -->
@@ -370,9 +342,6 @@ mysqli_close($conn);
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

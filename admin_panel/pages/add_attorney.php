@@ -263,7 +263,6 @@ if ( isset($_POST['add']) ) {
                             <li><a href="table-basic.php" class="link"><span>Notification</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
-							<li ><a href="attorney_table.php" class="link"><span>Assign</span></a></li>
                         </ul>
                     </li>
             </div>
