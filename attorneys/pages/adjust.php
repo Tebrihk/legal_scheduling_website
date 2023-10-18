@@ -17,7 +17,7 @@
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
 		
 		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
+		$sql=mysqli_query($conn,"SELECT * FROM attorneys WHERE name='$user'");
 			$row=mysqli_fetch_array($sql);
 
 ?> 
@@ -148,13 +148,15 @@
 							}
 							
 							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-							$sql = mysqli_query($conn, "SELECT * FROM admin WHERE name='$user'");
+							$sql = mysqli_query($conn, "SELECT * FROM attorneys WHERE name='$user'");
 							$row = mysqli_fetch_array($sql);
 							
 							if ($row) {
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								sleep(10);
+								header("Location: login.php");
 							}
 							
 							mysqli_close($conn);
@@ -210,7 +212,7 @@
             <div class="sidebar-content">
                 <ul>
                     <li>
-                        <a href="index.php" class="link">
+                        <a href="index.html" class="link">
                             <i class="ti-home"></i>
                             <span>Dashboard</span>
                         </a>
@@ -277,34 +279,14 @@
 				<br /><input type="text" name="name" value="<?php echo $result['name']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
 				<br /><input type="text" name="category" value="<?php echo $result['category']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
 				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php echo $result['complaint']; ?></textarea><br />
-				<br /><input type="text" name="date" value="<?php echo $result['date']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="time" value="<?php echo $result['time']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br /><br />
 				
-				Pick an attorney of record <br /><br />
-				<?php
-					$servername = "localhost";
-					$username = "root";
-					$password = "mysql";
-					$dbname = "legal_scheduling";
-					
-					$conn = mysqli_connect($servername, $username, $password, $dbname);
-					if ($conn->connect_error) {
-						die("Connection failed: " . $conn->connect_error);
-					}
-					
-					$sql = "SELECT * FROM attorneys";
-					$result = $conn->query($sql);
-					?>
-					
-					<select name="AOR" style="width:300px; height:50px;">
-					<?php
-					while ($row = $result->fetch_assoc()) {
-						echo "<option value='" . $row['name'] . "'>" . $row['name'] . " - " . $row['practise'] . "</option>";
-					}
-					?>
-					</select><br>
+				Adjust the time and date 
+				:
+				<br /><input type="text" name="date" value="" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="time" value="" style="width:300px; height:50px;" readonly="readonly" /><br /><br />
+				
 
-				<br /><input type="submit" name="push" value="PUSH" style="background-color:#33CCFF; color:#FFFFFF; width:90px; height:50px;" />
+				<br /><input type="submit" name="adjust" value="ADJUST" style="background-color:#33CCFF; color:#FFFFFF; width:90px; height:50px;" />
 			</form>
 
               </div>
@@ -386,7 +368,7 @@
         </div> 
 
         <footer>
-            Copyright � 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
+            Copyright ? 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>
