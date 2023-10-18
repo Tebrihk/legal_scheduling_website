@@ -32,7 +32,7 @@
 					die("Connection failed: " . $conn->connect_error);
 				}
 				$id = $_GET['id'];
-				$sql=mysqli_query($conn,"SELECT * FROM appointment WHERE id='$id'");
+				$sql=mysqli_query($conn,"SELECT * FROM pend WHERE id='$id'");
 				$result=mysqli_fetch_array($sql);
 				
 				
@@ -45,7 +45,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assign</title>
+    <title>Adjust</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -53,6 +53,7 @@
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../vendor/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="../vendor/perfect-scrollbar/css/perfect-scrollbar.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- CSS for this page only -->
 <link href="../vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
@@ -271,19 +272,19 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>ASSIGN</h4>
+                        <h4>ADJUST</h4>
                     </div>
                 <div class="card-body">
-										<form method="post" action="pending.php">
+										<form method="post" action="adjust_check.php">
 				<br /><input type="text" name="id" value="<?php echo $result['id']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
 				<br /><input type="text" name="name" value="<?php echo $result['name']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="category" value="<?php echo $result['category']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php echo $result['complaint']; ?></textarea><br />
 				
-				Adjust the time and date 
-				:
-				<br /><input type="text" name="date" value="" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="time" value="" style="width:300px; height:50px;" readonly="readonly" /><br /><br />
+				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php echo $result['complaint']; ?></textarea><br />
+				<br /><input type="text" name="AOR" value="<?php echo $result['AOR']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				
+				Adjust the time and date :
+				<br /><input  type="text" name="date" value="" style="width:300px; height:50px;" readonly="readonly" id="datePicker" /><br />
+				<br /><input  type="text" name="time" value="" style="width:300px; height:50px;" readonly="readonly" id="timePicker" /><br /><br />
 				
 
 				<br /><input type="submit" name="adjust" value="ADJUST" style="background-color:#33CCFF; color:#FFFFFF; width:90px; height:50px;" />
@@ -383,6 +384,7 @@
 <script src="../vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
 <script src="../assets/js/pages/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- ======= -->
     <script src="../assets/js/main.min.js"></script>
     <script>
@@ -390,6 +392,17 @@
     </script>
 <script>
     DataTable.init()
+</script>
+<script>
+    flatpickr("#datePicker", {
+        enableTime: false, // Set to true to enable time selection
+        dateFormat: "Y-m-d", // Date format (change as needed)
+    });
+	flatpickr("#timePicker", {
+       enableTime: true,   
+            enableDate: false,  
+            noCalendar: true
+    });
 </script>
 </body>
 
