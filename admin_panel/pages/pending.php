@@ -59,7 +59,9 @@ if (isset($_POST['push'])) {
     $time = $_POST['time'];
     $status = 'pending';
 	
-	$sql =mysqli_query($conn, "insert into pend (name,complaint,AOR,date,time,status) values ('$name','$complaint','$AOR','$date','$time','$status')");
+	$sql =mysqli_query($conn, "insert into pend (id,name,complaint,AOR,date,time,status) values ('$id','$name','$complaint','$AOR','$date','$time','$status')");
+	$sql1 =mysqli_query($conn, "insert into accept (id,name,complaint,AOR,date,time,status) values ('$id'.'$name','$complaint','$AOR','$date','$time','$status')");
 	}
+	
 
 ?>

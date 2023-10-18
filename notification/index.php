@@ -183,7 +183,7 @@ mysqli_close($conn);
                                     <a href="../appointment.php" class="dropdown-item" ><span>Appointment</span>
  </a>
 									
-                                    <a href="logout.php" class="dropdown-item">Log out</a>
+                                    <a href="../logout.php" class="dropdown-item">Log out</a>
                                 </div>
                             </div>
                         </div>
@@ -199,36 +199,167 @@ mysqli_close($conn);
   <div class="container">
     <h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell text-muted"></i></h3>
     <div class="notification-ui_dd-content">
-      <div class="notification-list notification-list--unread">
+      <div class="notification-list notification-list--read">
         <div class="notification-list_content">
           <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
-          <div class="notification-list_detail">
-            <p><b><?php echo $row['name']; ?></b> <?php echo $row['status']; ?></p>
-            <p class="text-muted"><?php echo $row['complaint']; ?></p>
-            <p class="text-muted"><small>10 mins ago</small></p>
-          </div>
+		  <?php
+				$servername = "localhost";
+				$username = "root";
+				$password = "mysql";
+				$dbname = "legal_scheduling";
+				
+				// Check if the user is logged in
+				if (!isset($_SESSION['user'])) {
+					header("Location: login.php");
+					exit;
+				}
+				
+				$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+				
+				// Get the user's name from the session
+				$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+				
+				// Prepare and execute the SQL query to retrieve the second appointment for the user
+				$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
+				$stmt = mysqli_prepare($conn, $sql);
+				
+				if ($stmt) {
+					mysqli_stmt_bind_param($stmt, "s", $user);
+					mysqli_stmt_execute($stmt);
+					$result = mysqli_stmt_get_result($stmt);
+				
+					if ($result->num_rows > 0) {
+						$row1 = mysqli_fetch_assoc($result); // Retrieve the data for the second appointment
+						$visibilityStyle = 'visible';
+					} else {
+						// No records found for the user
+						$visibilityStyle = 'hidden';
+					}
+				
+					// Close the prepared statement
+					mysqli_stmt_close($stmt);
+				} else {
+					echo "Failed to prepare the statement.";
+				}
+				
+				mysqli_close($conn);
+				?>
+
+				<div class="notification-list_detail" style="visibility: <?php echo $visibilityStyle; ?>">
+					<p><b><?php echo $row1['name']; ?></b> <?php echo $row1['status']; ?></p>
+					<p class="text-muted"><?php echo $row1['complaint']; ?></p>
+					<p class="text-muted"><small>date:<?php echo $row1['date'] ?></small></p>
+					<p class="text-muted"><small>time:<?php echo $row1['time'] ?></small></p>
+				</div>
+
         </div>
         <div class="notification-list_feature-img"> <img src="images/features/random1.jpg" alt="Feature image"> </div>
       </div>
-      <div class="notification-list notification-list--unread">
+      <div class="notification-list notification-list--read">
         <div class="notification-list_content">
           <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
-          <div class="notification-list_detail">
-             <p><b><?php echo $row1['name']; ?></b> <?php echo $row1['status']; ?></p>
-            <p class="text-muted"><?php echo $row1['complaint']; ?></p>
-            <p class="text-muted"><small>10 mins ago</small></p>
-          </div>
+		  <?php
+				$servername = "localhost";
+				$username = "root";
+				$password = "mysql";
+				$dbname = "legal_scheduling";
+				
+				// Check if the user is logged in
+				if (!isset($_SESSION['user'])) {
+					header("Location: login.php");
+					exit;
+				}
+				
+				$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+				
+				// Get the user's name from the session
+				$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+				
+				// Prepare and execute the SQL query to retrieve the second appointment for the user
+				$sql2 = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
+				$stmt = mysqli_prepare($conn, $sql2);
+				
+				if ($stmt) {
+					mysqli_stmt_bind_param($stmt, "s", $user);
+					mysqli_stmt_execute($stmt);
+					$result = mysqli_stmt_get_result($stmt);
+				
+					if ($result->num_rows > 0) {
+						$row = mysqli_fetch_assoc($result); // Retrieve the data for the second appointment
+						$visibilityStyle = 'visible';
+					} else {
+						// No records found for the user
+						$visibilityStyle = 'hidden';
+					}
+				
+					// Close the prepared statement
+					mysqli_stmt_close($stmt);
+				} else {
+					echo "Failed to prepare the statement.";
+				}
+				
+				mysqli_close($conn);
+				?>
+          <div class="notification-list_detail" style="visibility: <?php echo $visibilityStyle; ?>">
+					<p><b><?php echo $row['name']; ?></b> <?php echo $row['status']; ?></p>
+					<p class="text-muted"><?php echo $row['complaint']; ?></p>
+					<p class="text-muted"><small>date:<?php echo $row['date'] ?></small></p>
+					<p class="text-muted"><small>time:<?php echo $row['time'] ?></small></p>
+				</div>
         </div>
         <div class="notification-list_feature-img"> <img src="images/features/random2.jpg" alt="Feature image"> </div>
       </div>
       <div class="notification-list notification-list--read">
         <div class="notification-list_content">
           <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
-          <div class="notification-list_detail">
-           <p><b><?php echo $row2['name']; ?></b> <?php echo $row2['status']; ?></p>
-            <p class="text-muted"><?php echo $row2['complaint']; ?></p>
-            <p class="text-muted"><small>10 mins ago</small></p>
-          </div>
+		  <?php
+				$servername = "localhost";
+				$username = "root";
+				$password = "mysql";
+				$dbname = "legal_scheduling";
+				
+				// Check if the user is logged in
+				if (!isset($_SESSION['user'])) {
+					header("Location: login.php");
+					exit;
+				}
+				
+				$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+				
+				// Get the user's name from the session
+				$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+				
+				// Prepare and execute the SQL query to retrieve the second appointment for the user
+				$sql3 = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
+				$stmt = mysqli_prepare($conn, $sql2);
+				
+				if ($stmt) {
+					mysqli_stmt_bind_param($stmt, "s", $user);
+					mysqli_stmt_execute($stmt);
+					$result = mysqli_stmt_get_result($stmt);
+				
+					if ($result->num_rows > 0) {
+						$row3 = mysqli_fetch_assoc($result); // Retrieve the data for the second appointment
+						$visibilityStyle = 'visible';
+					} else {
+						// No records found for the user
+						$visibilityStyle = 'hidden';
+					}
+				
+					// Close the prepared statement
+					mysqli_stmt_close($stmt);
+				} else {
+					echo "Failed to prepare the statement.";
+				}
+				
+				mysqli_close($conn);
+				?>
+           <div class="notification-list_detail" style="visibility: <?php echo $visibilityStyle; ?>">
+					<p><b><?php echo $row3['name']; ?></b> <?php echo $row3['status']; ?></p>
+					<p class="text-muted"><?php echo $row3['complaint']; ?></p>
+					<p class="text-muted"><small>date:<?php echo $row3['date'] ?></small></p>
+					<p class="text-muted"><small>time:<?php echo $row3['time'] ?></small></p>
+				</div>
         </div>
         <div class="notification-list_feature-img"> <img src="images/features/random3.jpg" alt="Feature image"> </div>
       </div>

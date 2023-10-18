@@ -1,25 +1,3 @@
-<?php
-    $servername = "localhost";
-	$username = "root";
-	$password = "mysql";
-	$dbname = "legal_scheduling";
-	
-	
-    ob_start();
-	session_start();
-	
-	// if session is not set this will redirect to login page
-	if( !isset($_SESSION['user']) ) {
-		header("Location:login.php");
-		exit;
-	}
-		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
-		
-		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
-			$row=mysqli_fetch_array($sql);
-
-?>       
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointments</title>
+    <title>Charts </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -37,7 +15,7 @@
     <link rel="stylesheet" href="../vendor/perfect-scrollbar/css/perfect-scrollbar.css">
 
     <!-- CSS for this page only -->
-
+<link rel="stylesheet" href="../vendor/chart.js/Chart.min.css">
     <!-- End CSS  -->
 
     <link rel="stylesheet" href="../assets/css/style.min.css">
@@ -102,7 +80,7 @@
                                             Brad
                                         </div>
                                         <div class="body">
-                                            <?php echo $name; ?>
+                                            I have something to discuss, please call me soon
                                         </div>
                                         <div class="time">3 hours ago</div>
                                     </div>
@@ -141,7 +119,7 @@
                     <div class="notification dropdown">
                         <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="far fa-bell"></i>
-                            <span class="badge" onClick="hello()" id="notification"></span>
+                            <span class="badge">12</span>
                         </a>
                         <ul class="dropdown-menu medium">
                             <li class="menu-header">
@@ -188,7 +166,7 @@
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
                                 <span></span>
-                                <div><?php echo $row['name']; ?></div>
+                                <div>Admin</div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -207,7 +185,7 @@
                                         <i class="ti-settings"></i> Setting
                                     </div>
                                 </a>
-                                <a href="logout.php">
+                                <a href="#">
                                     <div class="description">
                                         <i class="ti-power-off"></i> Logout
                                     </div>
@@ -247,88 +225,107 @@
                     <li class="menu-category">
                         <span class="text-uppercase">User Interface</span>
                     </li>
-                    
-                    <li class="active open">
+                    <li>
                         <a href="#" class="main-menu has-dropdown">
                             <i class="ti-write"></i>
                             <span>Tables</span>
                         </a>
-                        <ul class="sub-menu expand">
-                            <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
-                            <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
-							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+                        <ul class="sub-menu ">
+                            <li><a href="table-basic.php" class="link"><span>Table Basic</span></a></li>
+                            <li><a href="table-datatables.html" class="link"><span>DataTables</span></a></li>
                         </ul>
                     </li>
-                    
+                    <li class="menu-category">
+                        <span class="text-uppercase">Extra</span>
+                    </li>
+                    <li class="active">
+                        <a href="charts.html" class="link">
+                            <i class="ti-bar-chart"></i>
+                            <span>Charts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="fullcalendar.php" class="link">
+                            <i class="ti-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>        
 <div class="main-content">
     <div class="title">
-        Dashboard
+        User chat
     </div>
-   
     <div class="content-wrapper">
         <div class="row same-height">
-            <div class="col-md-4">
-               
-           
-          </div>
-                    <div class="card-body">
-                        <div id="apex-chart-bar"></div>
-                    </div>
-      </div>
-    </div>
-    <div class="col-md-4"></div>
             <div class="col-md-12">
-			 <div class="card">
+                <div class="card">
                     <div class="card-header">
-                        <h4>APPOINTMENTS</h4>
+                        <h4>Monthly visitors</h4>
                     </div>
-                <div class="card-body">
-                   <?php
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
-
-$conn =mysqli_connect($servername,$username,$password,$dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-$sql = "SELECT * FROM appointment";
-$result = $conn->query($sql);
- echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
-if($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $row["id"] . "</td>";
-        echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["category"] . "</td>";
-		echo "<td>" . $row["complaint"] . "</td>";
-		echo "<td>" . $row["date"] . "</td>";
-		echo "<td>" . $row["time"] . "</td>";
-		echo "<td>" . $row["status"] . "</td>";
-		echo "<td>";
-		echo "<a href='assign.php?id=" . $row["id"] . "'><button>PUSH</button></a>";
-		echo "</td>";
-        echo "</tr>";
-    }
-	}
-	else {
-	echo "<tr><td colspan='3'>No records found</td></tr>";
-	}
-	echo "</table>";
-	$conn->close();
-	
-?>
-                   
-                       
-              </div>
-    </div>
-      </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <canvas id="lineChart" height="842" width="1388"></canvas>
+                            </div>
+                            <div class="col-md-5">
+                                <p class="mb-2">
+                                    A line chart is a way of plotting data points on a line.
+                                    Often, it is used to show trend data, and the comparison of two data sets.
+                                </p>
+                                <p>
+                                    The line chart requires an array of labels for each of the data points. This is
+                                    shown on the X axis. The data for line charts is broken up into an array of
+                                    datasets. Each dataset has a colour for the fill, a colour for the line and colours
+                                    for the points and strokes of the points. These colours are strings just like CSS.
+                                    You can use RGBA, RGB, HEX or HSL notation.
+                                </p>
+                                <p>
+                                    The label key on each dataset is optional, and can be used when generating a scale
+                                    for the chart.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Bar Chart</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <p class="mb-2">
+                                    A bar chart is a way of showing data as bars.
+                                    It is sometimes used to show trend data, and the comparison of multiple data sets
+                                    side by side.
+                                </p>
+                                <p>
+                                    The bar chart has the a very similar data structure to the line chart, and has an
+                                    array of datasets, each with colours and an array of data. Again, colours are in CSS
+                                    format.
+                                    We have an array of labels too for display. In the example, we are showing the same
+                                    data as the previous line chart example.
+                                </p>
+                                <p>
+                                    The label key on each dataset is optional, and can be used when generating a scale
+                                    for the chart.
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas id="barChart" height="842" width="1388"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+   
+    
     </div>
 
 </div>
@@ -392,7 +389,7 @@ if($result->num_rows > 0) {
         </div> 
 
         <footer>
-            Copyright © 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
+            Copyright © 2022 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1"> Mulai Dari Null </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>
@@ -401,20 +398,14 @@ if($result->num_rows > 0) {
     <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
     <!-- js for this page only -->
-
+<script src="../vendor/chart.js/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="../assets/js/pages/charts.min.js"></script>
     <!-- ======= -->
     <script src="../assets/js/main.min.js"></script>
     <script>
         Main.init()
     </script>
 </body>
- <script>
-        function hello (){
-            var c = document.getElementById("notification").value
-           c.addEventListener('click', function() {
-    // Change the text of the paragraph
-    paragraph.textContent = 0;
-});
-         }
-    </script>
+
 </html>
