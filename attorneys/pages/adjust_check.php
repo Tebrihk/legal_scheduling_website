@@ -21,6 +21,7 @@ $sql = "INSERT INTO adjust (id, name, complaint, AOR, date, time, status) VALUES
 
 if ($conn->query($sql) === true) {
     $sql1 = "UPDATE pend SET date = '$date', time = '$time',status = '$status' WHERE id = $id";
+	$sql1 = "UPDATE appointment SET date = '$date', time = '$time',status = '$status' WHERE id = $id";
     if ($conn->query($sql1) === true) {
 	echo "successfull "; 
         header("location:index.php");
