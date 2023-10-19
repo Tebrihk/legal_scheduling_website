@@ -46,7 +46,7 @@
 </head>
 
 <body>
-    <div id="app">
+        <div id="app">
         <div class="shadow-header"></div>
         <header class="header-navbar fixed">
             <div class="header-wrapper">
@@ -56,139 +56,42 @@
                 </div>
                 <div class="header-content">
                     <div class="theme-switch-icon"></div>
-                    <div class="notification dropdown">
-                        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                        </a>
-                        <ul class="dropdown-menu medium">
-                            <li class="menu-header">
-                                <a class="dropdown-item" href="#">Message</a>
-                            </li>
-                            <li class="menu-content ps-menu">
-                                <a href="#">
-                                    <div class="message-image">
-                                        <img src="../assets/images/avatar1.png" class="rounded-circle w-100" alt="user1">
-                                    </div>
-                                    <div class="message-content read">
-                                        <div class="subject">
-                                            John
-                                        </div>
-                                        <div class="body">
-                                            Please call me at 9pm
-                                        </div>
-                                        <div class="time">Just now</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-image">
-                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
-                                    </div>
-                                    <div class="message-content">
-                                        <div class="subject">
-                                            Michele
-                                        </div>
-                                        <div class="body">
-                                            Please come to my party
-                                        </div>
-                                        <div class="time">3 hours ago</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-image">
-                                        <img src="../assets/images/avatar1.png" class="rounded-circle w-100" alt="user1">
-                                    </div>
-                                    <div class="message-content read">
-                                        <div class="subject">
-                                            Brad
-                                        </div>
-                                        <div class="body">
-                                            <?php echo $name; ?>
-                                        </div>
-                                        <div class="time">3 hours ago</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-image">
-                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
-                                    </div>
-                                    <div class="message-content">
-                                        <div class="subject">
-                                            Anel
-                                        </div>
-                                        <div class="body">
-                                            Sorry i'm late
-                                        </div>
-                                        <div class="time">8 hours ago</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-image">
-                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
-                                    </div>
-                                    <div class="message-content">
-                                        <div class="subject">
-                                            Mary
-                                        </div>
-                                        <div class="body">
-                                            Please answer my question last night
-                                        </div>
-                                        <div class="time">Last month</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="notification dropdown">
-                        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <span class="badge" onClick="hello()" id="notification"></span>
-                        </a>
-                        <ul class="dropdown-menu medium">
-                            <li class="menu-header">
-                                <a class="dropdown-item" href="#">Notification</a>
-                            </li>
-                            <li class="menu-content ps-menu">
-                                <a href="#">
-                                    <div class="message-icon text-danger">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                    <div class="message-content read">
-                                        <div class="body">
-                                            There's incoming event, don't miss it!!
-                                        </div>
-                                        <div class="time">Just now</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-icon text-info">
-                                        <i class="fas fa-info"></i>
-                                    </div>
-                                    <div class="message-content read">
-                                        <div class="body">
-                                            Your licence will expired soon
-                                        </div>
-                                        <div class="time">3 hours ago</div>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="message-icon text-success">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="message-content">
-                                        <div class="body">
-                                            Successfully register new user
-                                        </div>
-                                        <div class="time">8 hours ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="dropdown dropdown-menu-end">
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
-                                <span></span>
-                                <div><?php echo $row['name']; ?></div>
+                                <span><?php
+							$servername = "localhost";
+							$username = "root";
+							$password = "mysql";
+							$dbname = "legal_scheduling";
+							
+							$conn = mysqli_connect($servername, $username, $password, $dbname);
+							
+							if ($conn->connect_error) {
+								echo "Connection failed: " . $conn->connect_error;
+								header("refresh:1;url=login.php");
+								exit;
+							}
+							
+							if (!isset($_SESSION['user'])) {
+								echo "User not logged in";
+								header("refresh:1;url=login.php");
+								exit;
+							}
+							
+							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+							$sql = mysqli_query($conn, "SELECT * FROM admin WHERE name='$user'");
+							$row = mysqli_fetch_array($sql);
+							
+							if ($row) {
+								echo $row['name'];
+							} else {
+								echo "User not logged in";
+							}
+							
+							mysqli_close($conn);
+							?></span>
+                                <div></div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -254,9 +157,10 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu expand">
-                            <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
+                            <li class="active"><a href="table-basic.php" class="link"><span>Assign</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+							<li><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>
                     
@@ -283,7 +187,7 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>APPOINTMENTS</h4>
+                        <h4>ASSIGN</h4>
                     </div>
                 <div class="card-body">
                    <?php

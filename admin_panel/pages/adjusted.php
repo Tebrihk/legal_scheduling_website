@@ -1,4 +1,13 @@
-<?php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>adjusted</title>
+</head>
+
+<body>
+</body>
+</html><?php
     $servername = "localhost";
 	$username = "root";
 	$password = "mysql";
@@ -27,7 +36,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients</title>
+    <title>Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
@@ -37,8 +46,7 @@
     <link rel="stylesheet" href="../vendor/perfect-scrollbar/css/perfect-scrollbar.css">
 
     <!-- CSS for this page only -->
-<link href="../vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-<link href="../vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" />
+
     <!-- End CSS  -->
 
     <link rel="stylesheet" href="../assets/css/style.min.css">
@@ -57,10 +65,139 @@
                 </div>
                 <div class="header-content">
                     <div class="theme-switch-icon"></div>
+                    <div class="notification dropdown">
+                        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="far fa-envelope"></i>
+                        </a>
+                        <ul class="dropdown-menu medium">
+                            <li class="menu-header">
+                                <a class="dropdown-item" href="#">Message</a>
+                            </li>
+                            <li class="menu-content ps-menu">
+                                <a href="#">
+                                    <div class="message-image">
+                                        <img src="../assets/images/avatar1.png" class="rounded-circle w-100" alt="user1">
+                                    </div>
+                                    <div class="message-content read">
+                                        <div class="subject">
+                                            John
+                                        </div>
+                                        <div class="body">
+                                            Please call me at 9pm
+                                        </div>
+                                        <div class="time">Just now</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-image">
+                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="subject">
+                                            Michele
+                                        </div>
+                                        <div class="body">
+                                            Please come to my party
+                                        </div>
+                                        <div class="time">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-image">
+                                        <img src="../assets/images/avatar1.png" class="rounded-circle w-100" alt="user1">
+                                    </div>
+                                    <div class="message-content read">
+                                        <div class="subject">
+                                            Brad
+                                        </div>
+                                        <div class="body">
+                                            <?php echo $name; ?>
+                                        </div>
+                                        <div class="time">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-image">
+                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="subject">
+                                            Anel
+                                        </div>
+                                        <div class="body">
+                                            Sorry i'm late
+                                        </div>
+                                        <div class="time">8 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-image">
+                                        <img src="../assets/images/avatar2.png" class="rounded-circle w-100" alt="user1">
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="subject">
+                                            Mary
+                                        </div>
+                                        <div class="body">
+                                            Please answer my question last night
+                                        </div>
+                                        <div class="time">Last month</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="notification dropdown">
+                        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="far fa-bell"></i>
+                            <span class="badge" onClick="hello()" id="notification"></span>
+                        </a>
+                        <ul class="dropdown-menu medium">
+                            <li class="menu-header">
+                                <a class="dropdown-item" href="#">Notification</a>
+                            </li>
+                            <li class="menu-content ps-menu">
+                                <a href="#">
+                                    <div class="message-icon text-danger">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="message-content read">
+                                        <div class="body">
+                                            There's incoming event, don't miss it!!
+                                        </div>
+                                        <div class="time">Just now</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-icon text-info">
+                                        <i class="fas fa-info"></i>
+                                    </div>
+                                    <div class="message-content read">
+                                        <div class="body">
+                                            Your licence will expired soon
+                                        </div>
+                                        <div class="time">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#">
+                                    <div class="message-icon text-success">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="body">
+                                            Successfully register new user
+                                        </div>
+                                        <div class="time">8 hours ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="dropdown dropdown-menu-end">
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
-                                <span><?php
+                                <span>
+								<?php
 							$servername = "localhost";
 							$username = "root";
 							$password = "mysql";
@@ -91,8 +228,11 @@
 							}
 							
 							mysqli_close($conn);
-							?></span>
-                                <div></div>
+							?>
+								</span>
+                                <div>
+								
+								</div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -151,6 +291,7 @@
                     <li class="menu-category">
                         <span class="text-uppercase">User Interface</span>
                     </li>
+                    
                     <li class="active open">
                         <a href="#" class="main-menu has-dropdown">
                             <i class="ti-write"></i>
@@ -158,9 +299,9 @@
                         </a>
                         <ul class="sub-menu expand">
                             <li><a href="table-basic.php" class="link"><span>Assign</span></a></li>
-                            <li class="active"><a href="table-datatables.php" class="link"><span>Client</span></a></li>
+                            <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
-							<li><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
+							<li class="active"><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>
                     
@@ -171,41 +312,23 @@
     <div class="title">
         Dashboard
     </div>
-    <div class="content-wrapper">
-        <div class="row same-height">
-            <div class="col-md-4">
-                
-            </div>
-        </div>
-    </div>
-    <div class="content-wrapper">
-        <div class="row same-height">
-            <div class="col-md-8">
-                <div class="card">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <div class="content-wrapper">
         <div class="row same-height">
             <div class="col-md-4">
                
            
-                </div>
+          </div>
                     <div class="card-body">
                         <div id="apex-chart-bar"></div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4"></div>
+      </div>
+    </div>
+    <div class="col-md-4"></div>
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>CLIENTS</h4>
+                        <h4>ADJUSTED</h4>
                     </div>
                 <div class="card-body">
                    <?php
@@ -218,17 +341,22 @@ $conn =mysqli_connect($servername,$username,$password,$dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT * FROM client";
+$sql = "SELECT * FROM adjust";
 $result = $conn->query($sql);
  echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>Address</th>";
+echo "<tr><th>ID</th><th>Name</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>notify client</th></tr>";
 if($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . $row["id"] . "</td>";
         echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["email"] . "</td>";
-		echo "<td>" . $row["address"] . "</td>";
+		echo "<td>" . $row["complaint"] . "</td>";
+		echo "<td>" . $row["date"] . "</td>";
+		echo "<td>" . $row["time"] . "</td>";
+		echo "<td>" . $row["status"] . "</td>";
+		echo "<td>";
+		echo "<a href='assign.php?id=" . $row["id"] . "'><button>SEND</button></a>";
+		echo "</td>";
         echo "</tr>";
     }
 	}
@@ -248,18 +376,7 @@ if($result->num_rows > 0) {
     </div>
 
 </div>
-            <div class="col-md-4">
-                <div class="card">
-                   
-                   
-                       
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-</div>
         <div class="settings">
             <div class="settings-icon-wrapper">
                 <div class="settings-icon">
@@ -319,7 +436,7 @@ if($result->num_rows > 0) {
         </div> 
 
         <footer>
-            Copyright Â© 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
+            Copyright © 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>
@@ -328,20 +445,20 @@ if($result->num_rows > 0) {
     <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
     <!-- js for this page only -->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-<script src="../vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
-<script src="../assets/js/pages/datatables.min.js"></script>
+
     <!-- ======= -->
     <script src="../assets/js/main.min.js"></script>
     <script>
         Main.init()
     </script>
-<script>
-    DataTable.init()
-</script>
 </body>
-
+ <script>
+        function hello (){
+            var c = document.getElementById("notification").value
+           c.addEventListener('click', function() {
+    // Change the text of the paragraph
+    paragraph.textContent = 0;
+});
+         }
+    </script>
 </html>
