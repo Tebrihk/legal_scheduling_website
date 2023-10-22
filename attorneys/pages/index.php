@@ -98,6 +98,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								header("refresh:1;url=login.php");
 							}
 							
 							mysqli_close($conn);
@@ -200,12 +201,13 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 			$sql = "SELECT * FROM pend WHERE AOR='$user'";
 			$result = $conn->query($sql);
 			 echo "<table class='table display nowrap' id='example'>";
-			echo "<tr><th>ID</th><th>Name</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>AOR</th><th>Action</th></tr>";
+			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>AOR</th><th>Action</th></tr>";
 			if($result->num_rows > 0) {
 				while ($row = $result->fetch_assoc()) {
 					echo "<tr>";
 					echo "<td>" . $row["id"] . "</td>";
 					echo "<td>" . $row["name"] . "</td>";
+					echo "<td>" . $row["email"] . "</td>";
 					echo "<td>" . $row["complaint"] . "</td>";
 					echo "<td>" . $row["date"] . "</td>";
 					echo "<td>" . $row["time"] . "</td>";

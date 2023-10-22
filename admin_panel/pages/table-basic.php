@@ -157,9 +157,10 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu expand">
-                            <li class="active"><a href="table-basic.php" class="link"><span>Assign</span></a></li>
+                            <li class="active"><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+							<li ><a href="assign_table.php" class="link"><span>Assign Attorney</span></a></li>
 							<li><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>
@@ -187,46 +188,44 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>ASSIGN</h4>
+                        <h4>APPOINTMENTS</h4>
                     </div>
                 <div class="card-body">
                    <?php
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-$dbname = "legal_scheduling";
-
-$conn =mysqli_connect($servername,$username,$password,$dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-$sql = "SELECT * FROM appointment";
-$result = $conn->query($sql);
- echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
-if($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $row["id"] . "</td>";
-        echo "<td>" . $row["name"] . "</td>";
-        echo "<td>" . $row["category"] . "</td>";
-		echo "<td>" . $row["complaint"] . "</td>";
-		echo "<td>" . $row["date"] . "</td>";
-		echo "<td>" . $row["time"] . "</td>";
-		echo "<td>" . $row["status"] . "</td>";
-		echo "<td>";
-		echo "<a href='assign.php?id=" . $row["id"] . "'><button>PUSH</button></a>";
-		echo "</td>";
-        echo "</tr>";
-    }
-	}
-	else {
-	echo "<tr><td colspan='3'>No records found</td></tr>";
-	}
-	echo "</table>";
-	$conn->close();
-	
-?>
+			$servername = "localhost";
+			$username = "root";
+			$password = "mysql";
+			$dbname = "legal_scheduling";
+			
+			$conn =mysqli_connect($servername,$username,$password,$dbname);
+			if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+			$sql = "SELECT * FROM appointment order by timestamp desc";
+			$result = $conn->query($sql);
+			 echo "<table class='table display nowrap' id='example'>";
+			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th></tr>";
+			if($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					echo "<tr>";
+					echo "<td>" . $row["id"] . "</td>";
+					echo "<td>" . $row["name"] . "</td>";
+					echo "<td>" . $row["email"] . "</td>";
+					echo "<td>" . $row["category"] . "</td>";
+					echo "<td>" . $row["complaint"] . "</td>";
+					echo "<td>" . $row["date"] . "</td>";
+					echo "<td>" . $row["time"] . "</td>";
+					echo "<td>" . $row["status"] . "</td>";
+					echo "</tr>";
+				}
+				}
+				else {
+				echo "<tr><td colspan='3'>No records found</td></tr>";
+				}
+				echo "</table>";
+				$conn->close();
+				
+			?>
                    
                        
               </div>

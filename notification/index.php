@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=login.php");
+		header("refresh:1;url=../login.php");
 		exit;
 	}
 	$timeout = 300;
@@ -199,9 +199,9 @@ mysqli_close($conn);
   <div class="container">
     <h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell text-muted"></i></h3>
     <div class="notification-ui_dd-content">
-      <div class="notification-list notification-list--read">
+      <div class="notification-list notification-list">
         <div class="notification-list_content">
-          <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
+          <div class="notification-list_img"></div>
 		  <?php
 				$servername = "localhost";
 				$username = "root";
@@ -220,7 +220,7 @@ mysqli_close($conn);
 				$user = mysqli_real_escape_string($conn, $_SESSION['user']);
 				
 				// Prepare and execute the SQL query to retrieve the second appointment for the user
-				$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
+				$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1";
 				$stmt = mysqli_prepare($conn, $sql);
 				
 				if ($stmt) {
@@ -253,11 +253,74 @@ mysqli_close($conn);
 				</div>
 
         </div>
-        <div class="notification-list_feature-img"> <img src="images/features/random1.jpg" alt="Feature image"> </div>
+        <div class="notification-list_feature-img">
+		<?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+
+// Get the user's name from the session
+$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+
+// Prepare and execute the SQL query to retrieve the second appointment for the user
+$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1";
+$stmt = mysqli_prepare($conn, $sql);
+
+if ($stmt) {
+    mysqli_stmt_bind_param($stmt, "s", $user);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result->num_rows > 0) {
+        $row1 = mysqli_fetch_assoc($result); 
+        $visibilityStyle = 'visible';
+    } else {
+        // No records found for the user
+        $visibilityStyle = 'hidden';
+    }
+    mysqli_stmt_close($stmt);
+    
+    // Retrieve the "status" for the second appointment
+    $sqlb = "SELECT status FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1";
+    $stmtb = mysqli_prepare($conn, $sqlb);
+    
+    if ($stmtb) {
+        mysqli_stmt_bind_param($stmtb, "s", $user);
+        mysqli_stmt_execute($stmtb);
+        $resultb = mysqli_stmt_get_result($stmtb);
+        
+        if ($resultb->num_rows > 0) {
+            $rowb = mysqli_fetch_assoc($resultb); 
+            
+            if ($rowb['status'] === "adjusted") {
+                echo "<a href='accept.php'><button>ACCEPT</button></a>";
+				echo "<br/>";echo "<br/>";
+				echo "<a href='adjust.php'><button>ADJUST</button></a>";
+            }
+        }
+        mysqli_stmt_close($stmtb);
+    } else {
+        echo "Failed to prepare the statement for status.";
+    }
+    
+    mysqli_close($conn);
+}
+?>
+
+		  </div>
       </div>
-      <div class="notification-list notification-list--read">
+      <div class="notification-list notification-list">
         <div class="notification-list_content">
-          <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
+          <div class="notification-list_img">  </div>
 		  <?php
 				$servername = "localhost";
 				$username = "root";
@@ -276,7 +339,7 @@ mysqli_close($conn);
 				$user = mysqli_real_escape_string($conn, $_SESSION['user']);
 				
 				// Prepare and execute the SQL query to retrieve the second appointment for the user
-				$sql2 = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
+				$sql2 = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
 				$stmt = mysqli_prepare($conn, $sql2);
 				
 				if ($stmt) {
@@ -307,11 +370,74 @@ mysqli_close($conn);
 					<p class="text-muted"><small>time:<?php echo $row['time'] ?></small></p>
 				</div>
         </div>
-        <div class="notification-list_feature-img"> <img src="images/features/random2.jpg" alt="Feature image"> </div>
+        <div class="notification-list_feature-img"> 
+		<?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+
+// Get the user's name from the session
+$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+
+// Prepare and execute the SQL query to retrieve the second appointment for the user
+$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
+$stmt = mysqli_prepare($conn, $sql);
+
+if ($stmt) {
+    mysqli_stmt_bind_param($stmt, "s", $user);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result->num_rows > 0) {
+        $row1 = mysqli_fetch_assoc($result); 
+        $visibilityStyle = 'visible';
+    } else {
+        // No records found for the user
+        $visibilityStyle = 'hidden';
+    }
+    mysqli_stmt_close($stmt);
+    
+    // Retrieve the "status" for the second appointment
+    $sqlb = "SELECT status FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
+    $stmtb = mysqli_prepare($conn, $sqlb);
+    
+    if ($stmtb) {
+        mysqli_stmt_bind_param($stmtb, "s", $user);
+        mysqli_stmt_execute($stmtb);
+        $resultb = mysqli_stmt_get_result($stmtb);
+        
+        if ($resultb->num_rows > 0) {
+            $rowb = mysqli_fetch_assoc($resultb); 
+            
+            if ($rowb['status'] === "adjusted") {
+                echo "<a href='accept.php'><button>ACCEPT</button></a>";
+				echo "<br/>";echo "<br/>";
+				echo "<a href='adjust.php'><button>ADJUST</button></a>";
+            }
+        }
+        mysqli_stmt_close($stmtb);
+    } else {
+        echo "Failed to prepare the statement for status.";
+    }
+    
+    mysqli_close($conn);
+}
+?>
+
+		 </div>
       </div>
-      <div class="notification-list notification-list--read">
+      <div class="notification-list notification-list">
         <div class="notification-list_content">
-          <div class="notification-list_img"> <img src="images/users/user1.jpg" alt="user"> </div>
+          <div class="notification-list_img">  </div>
 		  <?php
 				$servername = "localhost";
 				$username = "root";
@@ -361,7 +487,70 @@ mysqli_close($conn);
 					<p class="text-muted"><small>time:<?php echo $row3['time'] ?></small></p>
 				</div>
         </div>
-        <div class="notification-list_feature-img"> <img src="images/features/random3.jpg" alt="Feature image"> </div>
+        <div class="notification-list_feature-img">
+		<?php
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_connect_error());
+
+// Get the user's name from the session
+$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+
+// Prepare and execute the SQL query to retrieve the second appointment for the user
+$sql = "SELECT * FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
+$stmt = mysqli_prepare($conn, $sql);
+
+if ($stmt) {
+    mysqli_stmt_bind_param($stmt, "s", $user);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result->num_rows > 0) {
+        $row1 = mysqli_fetch_assoc($result); 
+        $visibilityStyle = 'visible';
+    } else {
+        // No records found for the user
+        $visibilityStyle = 'hidden';
+    }
+    mysqli_stmt_close($stmt);
+    
+    // Retrieve the "status" for the second appointment
+    $sqlb = "SELECT status FROM appointment WHERE name = ? ORDER BY id DESC LIMIT 1 OFFSET 2";
+    $stmtb = mysqli_prepare($conn, $sqlb);
+    
+    if ($stmtb) {
+        mysqli_stmt_bind_param($stmtb, "s", $user);
+        mysqli_stmt_execute($stmtb);
+        $resultb = mysqli_stmt_get_result($stmtb);
+        
+        if ($resultb->num_rows > 0) {
+            $rowb = mysqli_fetch_assoc($resultb); 
+            
+            if ($rowb['status'] === "adjusted") {
+                echo "<a href='accept.php'><button>ACCEPT</button></a>";
+				echo "<br/>";echo "<br/>";
+				echo "<a href='adjust.php'><button>ADJUST</button></a>";
+            }
+        }
+        mysqli_stmt_close($stmtb);
+    } else {
+        echo "Failed to prepare the statement for status.";
+    }
+    
+    mysqli_close($conn);
+}
+?>
+
+		 </div>
       </div>
       
 </section>

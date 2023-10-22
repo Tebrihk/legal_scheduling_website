@@ -11,13 +11,14 @@ if ($conn->connect_error) {
 
 $id = strip_tags($_POST['id']);
 $name = strip_tags($_POST['name']);
+$email = strip_tags($_POST['email']);
 $complaint = strip_tags($_POST['complaint']);
 $AOR = strip_tags($_POST['AOR']);
 $date = strip_tags($_POST['date']);
 $time = strip_tags($_POST['time']);
 $status = "adjusted";
 
-$sql = "INSERT INTO adjust (id, name, complaint, AOR, date, time, status) VALUES ('$id', '$name', '$complaint', '$AOR', '$date', '$time', '$status')";
+$sql = "INSERT INTO adjust (id, name,email, complaint, AOR, date, time, status) VALUES ('$id', '$name','$email', '$complaint', '$AOR', '$date', '$time', '$status')";
 
 if ($conn->query($sql) === true) {
     $sql1 = "UPDATE pend SET date = '$date', time = '$time',status = '$status' WHERE id = $id";

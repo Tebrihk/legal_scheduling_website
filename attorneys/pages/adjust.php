@@ -107,6 +107,7 @@
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								header("refresh:1;url=login.php");
 							}
 							
 							mysqli_close($conn);

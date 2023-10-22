@@ -214,7 +214,7 @@
 							if (!isset($_SESSION['user'])) {
 								echo "User not logged in";
 								header("refresh:1;url=login.php");
-								exit;
+								
 							}
 							
 							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
@@ -225,6 +225,7 @@
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								header("refresh:1;url=login.php");
 							}
 							
 							mysqli_close($conn);
@@ -301,6 +302,7 @@
                             <li><a href="table-basic.php" class="link"><span>Assign</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+							<li ><a href="assign_table.php" class="link"><span>Assign Attorney</span></a></li>
 							<li class="active"><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>
@@ -344,18 +346,19 @@ if ($conn->connect_error) {
 $sql = "SELECT * FROM adjust";
 $result = $conn->query($sql);
  echo "<table class='table display nowrap' id='example'>";
-echo "<tr><th>ID</th><th>Name</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>notify client</th></tr>";
+echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>notify client</th></tr>";
 if($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . $row["id"] . "</td>";
         echo "<td>" . $row["name"] . "</td>";
+		echo "<td>" . $row["email"] . "</td>";
 		echo "<td>" . $row["complaint"] . "</td>";
 		echo "<td>" . $row["date"] . "</td>";
 		echo "<td>" . $row["time"] . "</td>";
 		echo "<td>" . $row["status"] . "</td>";
 		echo "<td>";
-		echo "<a href='assign.php?id=" . $row["id"] . "'><button>SEND</button></a>";
+		echo "<a href='mail.php?id=" . $row["id"] . "'><button>SEND</button></a>";
 		echo "</td>";
         echo "</tr>";
     }

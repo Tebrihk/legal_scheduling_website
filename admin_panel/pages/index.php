@@ -229,6 +229,7 @@ $conn->close();
                             <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="table-datatables.html" class="link"><span>Clients</span></a></li>
 							<li><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+							<li><a href="assign_table.php" class="link"><span>Assign Attorney</span></a></li>
 							<li><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>

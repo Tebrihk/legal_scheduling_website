@@ -124,8 +124,41 @@
                     <div class="dropdown dropdown-menu-end">
                         <a href="#" class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="label">
-                                <span></span>
-                                <div><?php echo $row['name']; ?></div>
+                                <span>
+								<?php
+							$servername = "localhost";
+							$username = "root";
+							$password = "mysql";
+							$dbname = "legal_scheduling";
+							
+							$conn = mysqli_connect($servername, $username, $password, $dbname);
+							
+							if ($conn->connect_error) {
+								echo "Connection failed: " . $conn->connect_error;
+								header("refresh:1;url=login.php");
+								exit;
+							}
+							
+							if (!isset($_SESSION['user'])) {
+								echo "User not logged in";
+								header("refresh:1;url=login.php");
+							}
+							
+							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
+							$sql = mysqli_query($conn, "SELECT * FROM admin WHERE name='$user'");
+							$row = mysqli_fetch_array($sql);
+							
+							if ($row) {
+								echo $row['name'];
+							} else {
+								echo "User not logged in";
+								header("refresh:1;url=login.php");
+							}
+							
+							mysqli_close($conn);
+							?>
+								</span>
+                                <div></div>
                             </div>
                             <img class="img-user" src="../assets/images/avatar1.png" alt="user"srcset="">
                         </a>
@@ -202,36 +235,7 @@
     <div class="title">
         Dashboard
     </div>
-    <div class="content-wrapper">
-        <div class="row same-height">
-            <div class="col-md-4">
-                
-            </div>
-        </div>
-    </div>
-    <div class="content-wrapper">
-        <div class="row same-height">
-            <div class="col-md-8">
-                <div class="card">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="content-wrapper">
-        <div class="row same-height">
-            <div class="col-md-4">
-               
-           
-                </div>
-                    <div class="card-body">
-                        <div id="apex-chart-bar"></div>
-                    </div>
-                </div>
-            </div>
+    
             <div class="col-md-4"></div>
             <div class="col-md-12">
 			 <div class="card">
@@ -240,13 +244,14 @@
                     </div>
                 <div class="card-body">
 								 <form method="post" action="pending.php">
-								<br />  <input type="text" name="id" value="<?php echo $result['id']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-								<br /> <input type="text" name="name" value="<?php echo $result['name']; ?>" style="width:300px; height:50px;" /><br />
-								<br />  <input type="text" name="email" value="<?php echo $result['complaint']; ?>" style="width:300px; height:50px;"  /><br />
-								   <br /><input type="text" name="address" value="<?php echo $result['category']; ?>" style="width:300px; height:50px;"  /><br />
-								    <br /><input type="text" name="password" value="<?php echo $result['date']; ?>" style="width:300px; height:50px;"  /><br />
-									 <br /><input type="text" name="password" value="<?php echo $result['time']; ?>" style="width:300px; height:50px;"  /><br />
-									  <br /><select name="ROA" style="width:300px; height:50px;" >
+								<br />  <input type="text" name="id" value="<?php if(result){ echo $result['id'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+								<br /> <input type="text" name="name" value="<?php if(result){ echo $result['name'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+								<br /> <input type="text" name="email" value="<?php if(result){ echo $result['email'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+								<br />  <input type="text" style="height:150px;" name="complaint" value="<?php if(result){ echo $result['complaint'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+								   <br /><input type="text" name="category" value="<<?php if(result){ echo $result['category'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+								    <br /><input type="text" name="date" value="<?php if(result){ echo $result['date'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+									 <br /><input type="text" name="time" value="<?php if(result){ echo $result['time'];}else{ echo "user is not logged in"; header("refresh:1;url=login.php");} ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+									  <br /><select name="AOR" style="width:300px; height:50px;" >
 								<br />	<option >Attorney</option>
                                        
                                          <?php

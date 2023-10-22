@@ -21,8 +21,8 @@
 
 // Check for the user's last activity time
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout) {
-    // User has been inactive for too long, destroy the session and log them out
-    session_unset(); // Unset all session variables
+
+    session_unset(); 
     session_destroy(); // Destroy the session
     header("Location:login.php"); // Redirect to the login page
     exit;
@@ -36,35 +36,40 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 ?>
 <?php
 $servername = "localhost";
-	$username = "root";
-	$password = "mysql";
-	$dbname = "legal_scheduling";
-	$conn = new mysqli($servername,$username,$password,$dbname);
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if (isset($_POST['submit'])) {
     $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
     $category = trim($_POST['category']);
     $complaint = trim($_POST['complaint']);
     $date = trim($_POST['date']);
     $time = trim($_POST['time']);
     $status = 'pending';
 
-    $stmt = $conn->prepare("INSERT INTO appointment (name, category, complaint, date, time, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $name, $category, $complaint, $date, $time, $status);
+   $stmt = $conn->prepare("INSERT INTO appointment (name, email, category, complaint, date, time, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
+$stmt->bind_param("sssssss", $name, $email, $category, $complaint, $date, $time, $status);
+
 
     if ($stmt->execute()) {
-	 $errMSG = "Login successful";
-        header("Location: notification/index.php");
+        $errMSG = "appointment successfully sent";
+		header("Location: success.php");
+       
     } else {
         // Handle the error
-		 $errMSG = "not successful";
+        $errMSG = "not successful";
         echo "Error: " . $stmt->error;
+        header("Location: appointment.php");
     }
     $stmt->close();
 }
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -193,7 +198,22 @@ $conn->close();
 			}
 			?>
                                 <div class="form-group" >
-                                 <input type="text" name="name"  class="form-control border-0 p-4" value="<?php echo $row['name']; ?>" style="width:355px;" readonly />
+                                 <input type="text" name="name"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['name'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
+                                </div>
+								<div class="form-group" >
+                                 <input type="text" name="email"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['email'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
                                 </div>
 								 <div class="form-group">
                                     <select class="custom-select border-0 px-4" style="height: 47px; width:355px; " name="category">

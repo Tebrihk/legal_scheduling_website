@@ -106,6 +106,7 @@
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								header("refresh:1;url=login.php");
 							}
 							
 							mysqli_close($conn);
@@ -225,12 +226,13 @@
                     </div>
                 <div class="card-body">
 										<form method="post" action="pending.php">
-				<br /><input type="text" name="id" value="<?php echo $result['id']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="name" value="<?php echo $result['name']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="category" value="<?php echo $result['category']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php echo $result['complaint']; ?></textarea><br />
-				<br /><input type="text" name="date" value="<?php echo $result['date']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				<br /><input type="text" name="time" value="<?php echo $result['time']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br /><br />
+				<br /><input type="text" name="id" value="<?php if($result){ echo $result['id'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="name" value="<?php if($result){ echo $result['name'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="email" value="<?php if($result){ echo $result['email'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="category" value="<?php if($result){ echo $result['category'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php if($result){ echo $result['complaint'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?></textarea><br />
+				<br /><input type="text" name="date" value="<?php if($result){ echo $result['date'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="time" value="<?php if($result){ echo $result['time'];}else{ echo "user not logged in"; header("refresh:1;url=login.php"); } ?>" style="width:300px; height:50px;" readonly="readonly" /><br /><br />
 				
 				Pick an attorney of record <br /><br />
 				<?php

@@ -164,7 +164,6 @@ if ( isset($_POST['add']) ) {
 							if (!isset($_SESSION['user'])) {
 								echo "User not logged in";
 								header("refresh:1;url=login.php");
-								exit;
 							}
 							
 							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
@@ -175,6 +174,7 @@ if ( isset($_POST['add']) ) {
 								echo $row['name'];
 							} else {
 								echo "User not logged in";
+								header("refresh:1;url=login.php");
 							}
 							
 							mysqli_close($conn);
