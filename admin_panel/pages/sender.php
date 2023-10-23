@@ -13,6 +13,10 @@ $email = trim($_POST['email']);
 $email = strip_tags($email);
 $email = htmlspecialchars($email);
 
+$id = trim($_POST['id']);
+$id = strip_tags($id);
+$id = htmlspecialchars($id);
+
 $to = $email;
 $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
 $message = $message; // Add $ to indicate it's a variable.
@@ -23,7 +27,7 @@ $mailSent = mail($to, $subject, $message, $headers);
 
 if ($mailSent) {
     echo "Email sent successfully.";
-    $sql = "DELETE FROM adjust WHERE email='$email'";
+   
     if (mysqli_query($conn, $sql)) {
        header("Location:index.php");
     } else {

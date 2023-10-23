@@ -358,7 +358,9 @@ if($result->num_rows > 0) {
 		echo "<td>" . $row["time"] . "</td>";
 		echo "<td>" . $row["status"] . "</td>";
 		echo "<td>";
-		echo "<a href='mail.php?id=" . $row["id"] . "'><button>SEND</button></a>";
+		if ($row['status'] === 'Adjusted') {
+		echo "<a href='mail.php?name=" . $row["name"] . "'><button>SEND</button></a>";
+		}
 		echo "</td>";
         echo "</tr>";
     }

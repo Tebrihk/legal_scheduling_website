@@ -20,18 +20,51 @@
 			$row=mysqli_fetch_array($sql);
 ?>       
 <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "mysql";
-        $dbname = "legal_scheduling";
-        
-        $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_error());
-        
-        $id = $_GET['id'];
-        $sql = mysqli_query($conn, "SELECT * FROM client WHERE id='$id'");
-        $result = mysqli_fetch_array($sql);
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "legal_scheduling";
+
+$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_error());
+
+// Get the ID from the query parameter
+$name = $_GET['name'];
+
+// Retrieve client information from the database
+$sql = "SELECT * FROM appointment WHERE name = ?";
+$stmt = mysqli_prepare($conn, $sql);
+
+if ($stmt) {
+    // Bind the parameters
+    mysqli_stmt_bind_param($stmt, "i", $name);
+
+    // Execute the query
+    mysqli_stmt_execute($stmt);
+
+    // Get the result
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_array($result)) {
+        // You can access the client information here
+		$clientId = $row['id'];
+        $clientName = $row['name'];
+        $clientEmail = $row['email'];
+        // ... (other fields)
        
-    ?>
+    } else {
+        echo "Client not found.";
+    }
+
+    // Close the prepared statement
+    mysqli_stmt_close($stmt);
+} else {
+    echo "Failed to prepare the statement: " . mysqli_error($conn);
+}
+
+// Close the database connection
+mysqli_close($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -200,28 +233,23 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>ASSIGN</h4>
+                        <h4>SEND MAIL</h4>
                     </div>
 					
                 <div class="card-body">
-				<form method="post" action="sender.php">
-    <input type="text" name="email" style="width:300px; height:50px;" value=" <?php if ($result) {
-            echo $result['email'];
-        } else {
-            echo "Email not found";
-        }?>">
+<form method="post" action="sender.php">
+<input type="text" name="id" style="width:300px; height:50px;" value="<?php echo isset($clientId) ? $clientId : 'Email not found'; ?>"><br>
+    <br>
+    <input type="text" name="email" style="width:300px; height:50px;" value="<?php echo isset($clientEmail) ? $clientEmail : 'Email not found'; ?>">
     <br>
     <br>
-    <textarea style="width:300px; height:150px;" name="message">Dear <?php if ($result) {
-            echo $result['name'];
-        } else {
-            echo "user ";
-        }?>
-		 Your appointment date has been set. You can kindly log in to your page to check notifications.</textarea>
+    <textarea style="width:300px; height:150px;" name="message">Dear <?php echo isset($clientName) ? $clientName : 'user'; ?>,
+Your appointment date has been set. You can kindly log in to your page to check notifications.</textarea>
     <br>
     <br>
     <input type="submit" name="send" value="SEND">
 </form>
+
 
                    
                        

@@ -201,7 +201,7 @@
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
-			$sql = "SELECT * FROM appointment where status = 'pending'";
+			$sql = "SELECT * FROM appointment where status = 'Pending'";
 			$result = $conn->query($sql);
 			 echo "<table class='table display nowrap' id='example'>";
 			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
