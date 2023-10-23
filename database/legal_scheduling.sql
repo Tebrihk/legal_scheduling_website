@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 16, 2023 at 09:43 AM
+-- Generation Time: Oct 23, 2023 at 12:12 AM
 -- Server version: 8.0.31
 -- PHP Version: 7.4.33
 
@@ -24,6 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `accept`
+--
+
+CREATE TABLE `accept` (
+  `id` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `complaint` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `AOR` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `adjust`
+--
+
+CREATE TABLE `adjust` (
+  `id` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `complaint` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `AOR` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `admin`
 --
 
@@ -34,13 +72,6 @@ CREATE TABLE `admin` (
   `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`id`, `name`, `email`, `password`) VALUES
-(2, 'maxwell', 'max@gmail.com', 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f');
-
 -- --------------------------------------------------------
 
 --
@@ -50,23 +81,33 @@ INSERT INTO `admin` (`id`, `name`, `email`, `password`) VALUES
 CREATE TABLE `appointment` (
   `id` int NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `complaint` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `appointment`
+-- Table structure for table `assigned`
 --
 
-INSERT INTO `appointment` (`id`, `name`, `category`, `complaint`, `date`, `time`, `status`) VALUES
-(2, 'max pat maigari', 'civil law', 'overtake', '', '', 'pending'),
-(5, 'max pat maigari', 'family law', 'cheating', '', '', 'approved'),
-(26, 'max pat maigari', 'Corperate law', 'takeover', '10/23/2023', '9:17 PM', 'pending'),
-(27, 'samuel eli', 'Corperate law', 'i am looking to for an attorney to structure my new venture', '10/16/2023', '11:00 AM', 'pending'),
-(28, 'max pat maigari', 'Family law', 'devious', '11/06/2023', '11:05 AM', 'pending');
+CREATE TABLE `assigned` (
+  `id` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `AOR` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `complaint` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -108,15 +149,6 @@ CREATE TABLE `client` (
   `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `client`
---
-
-INSERT INTO `client` (`id`, `name`, `email`, `address`, `password`) VALUES
-(16, 'max pat maigari', 'max@gmail.com', '5453 4553 sabo', 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'),
-(17, 'christopher markus', 'markuschris@gmail.com', 'line 3 ugwan pama kaduna', 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'),
-(18, 'samuel eli', 'sam@gmail.com', 'garki abuja', 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f');
-
 -- --------------------------------------------------------
 
 --
@@ -126,21 +158,15 @@ INSERT INTO `client` (`id`, `name`, `email`, `address`, `password`) VALUES
 CREATE TABLE `pend` (
   `id` int NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `complaint` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `AOR` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `pend`
---
-
-INSERT INTO `pend` (`id`, `name`, `complaint`, `AOR`, `date`, `time`, `status`) VALUES
-(3, 'max pat maigari', 'takeover', 'Michael Okpara', '10/23/2023', '9:17 PM', 'pending'),
-(5, 'max pat maigari', 'cheating', 'Dom Ceasar', '', '', 'pending'),
-(6, 'max pat maigari', 'overtake', 'Suzan Dama', '', '', 'Accepted');
 
 --
 -- Indexes for dumped tables
@@ -184,13 +210,13 @@ ALTER TABLE `pend`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `attorneys`
@@ -202,13 +228,13 @@ ALTER TABLE `attorneys`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pend`
 --
 ALTER TABLE `pend`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

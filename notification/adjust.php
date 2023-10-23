@@ -10,11 +10,8 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		 header("Location:login.php");
+		 header("Location:../../login.php");
 		exit;
-	}
-	if( isset($_SESSION['recordInserted']) ) {
-		 echo" <span class='badge' style='visibility:visible;'>1</span>";
 	}
 	
 	$timeout = 300;
@@ -24,13 +21,13 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 
     session_unset(); 
     session_destroy(); // Destroy the session
-    header("Location:login.php"); // Redirect to the login page
+    header("Location:../../login.php"); // Redirect to the login page
     exit;
 	}
 		$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
 		
 		$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-		$sql=mysqli_query($conn,"SELECT * FROM client WHERE name='$user'");
+		$sql=mysqli_query($conn,"SELECT * FROM adjust WHERE name='$user'");
 			$row=mysqli_fetch_array($sql);
 
 ?>
@@ -49,8 +46,8 @@ if (isset($_POST['submit'])) {
     $date = trim($_POST['date']);
     $time = trim($_POST['time']);
     $status = 'pending';
-	
-	 $currentDate = date("Y-m-d");
+
+    $currentDate = date("Y-m-d");
     if ($date < $currentDate) {
         // Date is in the past, display an error message or take appropriate action.
         $errMSG = "Error: You cannot schedule appointments in the past.";
@@ -58,36 +55,43 @@ if (isset($_POST['submit'])) {
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO appointment (name, email, category, complaint, date, time, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("sssssss", $name, $email, $category, $complaint, $date, $time, $status);
+    $sql = "UPDATE appointment SET name = ?, email = ?, `category` = ?, complaint = ?, date = ?, time = ?, timestamp = NOW() WHERE id = ?";
 
-    if ($stmt->execute()) {
-        $errMSG = "Appointment successfully sent";
+    // Prepare and execute the statement
+    $stmt = mysqli_prepare($conn, $sql);
+    if ($stmt) {
+        // Bind the parameters
+        mysqli_stmt_bind_param($stmt, "sssssi", $name, $email, $category, $complaint, $date, $time, $id);
 
-        // Send email
-        $to = $email;
-        $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
-        $message = "Dear $name, Your appointment has been scheduled for $date at $time. Please check your account for more details.";
-        $headers = "From: covenant@example.com";
+        if (mysqli_stmt_execute($stmt)) {
+            $errMSG = "Appointment successfully sent for adjustment";
 
-        $mailSent = mail($to, $subject, $message, $headers);
+            // Send email
+            $to = $email;
+            $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
+            $message = "Dear $name, Your new appointment has been rescheduled for $date at $time. Please check your account for response and approval.";
+            $headers = "From: covenant@example.com";
 
-        if ($mailSent) {
-            header("Location: success.php");
+            $mailSent = mail($to, $subject, $message, $headers);
+
+            if ($mailSent) {
+                header("Location: success.php");
+            } else {
+                // Handle email sending failure
+                $errMSG = "Email sending failed.";
+            }
         } else {
-            // Handle email sending failure
-            $errMSG = "Email sending failed.";
+            // Handle the database insert error
+            $errMSG = "Appointment scheduling failed. Error: " . $stmt->error;
         }
-    } else {
-        // Handle the database insert error
-        $errMSG = "Appointment scheduling failed. Error: " . $stmt->error;
-    }
 
-    $stmt->close();
+        $stmt->close();
+    }
 }
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -95,7 +99,7 @@ $conn->close();
 
 <head>
     <meta charset="utf-8">
-    <title>MARK JOHNSON</title>
+    <title>adjust</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -107,7 +111,7 @@ $conn->close();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
 	<style type="text/css">
 #notification {
   background-color: #555;
@@ -203,7 +207,7 @@ $conn->close();
                 <div class="row h-100 align-items-center justify-content-center">
                     <div class="col-lg-6 py-5">
                         <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
-                            <h1 class="text-center text-white mb-4">Get An Appointment</h1>
+                            <h1 class="text-center text-white mb-4">Adjust Appointment</h1>
                             <form action="#" method="POST">
 							 <?php
 			if ( isset($errMSG) ) {
@@ -217,6 +221,7 @@ $conn->close();
                 <?php
 			}
 			?>
+
                                 <div class="form-group" >
                                  <input type="text" name="name"  class="form-control border-0 p-4" value="<?php 
 								 if($row){
@@ -226,27 +231,14 @@ $conn->close();
 								 header("Location:login.php");
 								 } ?>" style="width:355px;" readonly />
                                 </div>
-								<div class="form-group" >
-                                 <input type="text" name="email"  class="form-control border-0 p-4" value="<?php 
+                                <div class="form-group">
+                                    <textarea placeholder="Your Complaint" style="height:250px; width:355px" name="complaint" value="<?php 
 								 if($row){
-								 echo $row['email'];
+								 echo $row['complaint'];
 								 }else
 								 {echo "user is logged out";
 								 header("Location:login.php");
-								 } ?>" style="width:355px;" readonly />
-                                </div>
-								 <div class="form-group">
-                                    <select class="custom-select border-0 px-4" style="height: 47px; width:355px; " name="category">
-									<option value="#">Select Category</option>
-                                        <option value="Civil law">Civil law</option>
-                                        <option value="Family law">Family law</option>
-                                        <option value="Corperate law">Corperate law</option>
-										<option value="Crimal law">Crimal law</option>
-										<option value="Business law">Business law</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <textarea placeholder="Your Complaint" style="height:250px; width:355px" name="complaint" required></textarea>
+								 } ?>" readonly></textarea>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-6">
@@ -272,9 +264,40 @@ $conn->close();
                                 </div>
 
                                 <div>
-                                    <button class="btn btn-primary btn-block border-0 py-3" type="submit" name="submit">Request
-                                        Appointment</button>
+                                    <button class="btn btn-primary btn-block border-0 py-3" type="submit" name="submit"> SUBMIT</button>
                                 </div>
+											<div class="form-group" style="visibility:hidden;" >
+			<input type="text" name="id"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['id'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
+								 <input type="text" name="email"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['email'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
+								  <input type="text" name="category"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['category'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
+								  <input type="text" name="status"  class="form-control border-0 p-4" value="<?php 
+								 if($row){
+								 echo $row['status'];
+								 }else
+								 {echo "user is logged out";
+								 header("Location:login.php");
+								 } ?>" style="width:355px;" readonly />
+								 
+								 
+								 </div>
                             </form>
                         </div>
                     </div>

@@ -11,3 +11,5 @@ http://localhost/legal_scheduling_website/admin_panel/pages/index.php
 legal_scheduling.sql contains all information in the database..so import to update
 
 database password is "mysql" and username is "root"
+
+change the senders email

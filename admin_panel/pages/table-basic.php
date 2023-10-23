@@ -201,7 +201,8 @@
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
-			$sql = "SELECT * FROM appointment order by timestamp desc";
+			$sql = "SELECT * FROM appointment WHERE status = 'pending' ORDER BY timestamp DESC";
+
 			$result = $conn->query($sql);
 			 echo "<table class='table display nowrap' id='example'>";
 			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>category</th><th>complaint</th><th>date</th><th>time</th><th>status</th></tr>";

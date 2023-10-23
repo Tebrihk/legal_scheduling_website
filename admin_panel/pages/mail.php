@@ -19,7 +19,24 @@
 		$sql=mysqli_query($conn,"SELECT * FROM admin WHERE name='$user'");
 			$row=mysqli_fetch_array($sql);
 ?>       
-
+<?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "mysql";
+        $dbname = "legal_scheduling";
+        
+        if (!isset($_SESSION['user'])) {
+            header("Location: login.php");
+            exit;
+        }
+        
+        $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_error());
+        
+        $id = $_GET['id'];
+        $sql = mysqli_query($conn, "SELECT * FROM client WHERE id='$id'");
+        $results = mysqli_fetch_array($sql);
+       
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -161,7 +178,7 @@
                             <li><a href="table-basic.php" class="link"><span>Assign</span></a></li>
                             <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
 							<li ><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
-							<li  class="active"><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
+							<li><a href="adjusted.php" class="link"><span>Adjusted</span></a></li>
                         </ul>
                     </li>
                     
@@ -192,36 +209,25 @@
                     </div>
 					
                 <div class="card-body">
-					<form method="post" action="sender.php">
-					<input type="text" name="email" style="width:300px; height:50px;" value="
-					<?php
-					$servername = "localhost";
-					$username = "root";
-					$password = "mysql";
-					$dbname = "legal_scheduling";
-					
-					if( !isset($_SESSION['user']) ) {
-						header("Location:login.php");
-						exit;
-					}
-						$conn =mysqli_connect($servername,$username,$password,$dbname) or die(mysql_error());
-						
-						$id = $_GET['id'];
-								$sql=mysqli_query($conn,"SELECT * FROM client WHERE id='$id'");
-								$results=mysqli_fetch_array($sql);
-								if($results)
-								{
-								echo $results['email'];
-								}else
-								{
-								echo "email not found";
-								}
-								
-				?>"><br>
-					<br><textarea rows="10" style="width:300px; height:150px;" name="message" value"you appointment date has been set,you can kindly login to your page to check notification"></textarea><br>
-					<br><input type="button" name="send" value="SEND" >
-					
-					</form>
+				<form method="post" action="sender.php">
+    <input type="text" name="email" style="width:300px; height:50px;" value=" <?php if ($results) {
+            echo $results['email'];
+        } else {
+            echo "Email not found";
+        }?>">
+    <br>
+    <br>
+    <textarea style="width:300px; height:150px;" name="message">Dear <?php if ($results) {
+            echo $results['name'];
+        } else {
+            echo "user ";
+        }?>
+		 Your appointment date has been set. You can kindly log in to your page to check notifications.</textarea>
+    <br>
+    <br>
+    <input type="submit" name="send" value="SEND">
+</form>
+
                    
                        
               </div>
