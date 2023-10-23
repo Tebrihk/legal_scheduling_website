@@ -91,7 +91,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 							}
 							
 							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-							$sql = mysqli_query($conn, "SELECT * FROM admin WHERE name='$user'");
+							$sql = mysqli_query($conn, "SELECT * FROM attorneys WHERE name='$user'");
 							$row = mysqli_fetch_array($sql);
 							
 							if ($row) {
@@ -169,7 +169,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu ">
-                            <li><a href="index.php" class="link"><span>Appointments</span></a></li>
+                            <li class="active"><a href="index.php" class="link"><span>Appointments</span></a></li>
                             <li><a href="fullcalendar.php" class="link"><span>Calendar</span></a></li>
                         </ul>
                     </li>
@@ -198,7 +198,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 				die("Connection failed: " . $conn->connect_error);
 			}
 			$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-			$sql = "SELECT * FROM pend WHERE AOR='$user'";
+			$sql = "SELECT * FROM assigned WHERE AOR='$user'";
 			$result = $conn->query($sql);
 			 echo "<table class='table display nowrap' id='example'>";
 			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>AOR</th><th>Action</th></tr>";
@@ -214,8 +214,10 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 					echo "<td>" . $row["status"] . "</td>";
 					echo "<td>" . $row["AOR"] . "</td>";
 					echo "<td>";
+					if ($row['status'] === 'Assigned') {
 					echo "<a href='adjust.php?id=" . $row["id"] . "'><button>ADJUST</button></a>";
 					echo "<a href='accepted.php?id=" . $row["id"] . "'><button>ACCEPT</button></a>";
+					}
 					echo "</td>";
 					echo "</tr>";
 				}

@@ -188,7 +188,7 @@
             <div class="col-md-12">
 			 <div class="card">
                     <div class="card-header">
-                        <h4>ASSIGN</h4>
+                        <h4>ASSIGN AN ATTORNEY</h4>
                     </div>
                 <div class="card-body">
                    <?php
@@ -201,23 +201,22 @@
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			}
-			$sql = "SELECT * FROM pend";
+			$sql = "SELECT * FROM appointment where status = 'pending'";
 			$result = $conn->query($sql);
 			 echo "<table class='table display nowrap' id='example'>";
-			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>AOR</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
+			echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>complaint</th><th>date</th><th>time</th><th>status</th><th>push</th></tr>";
 			if($result->num_rows > 0) {
 				while ($row = $result->fetch_assoc()) {
 					echo "<tr>";
 					echo "<td>" . $row["id"] . "</td>";
 					echo "<td>" . $row["name"] . "</td>";
 					echo "<td>" . $row["email"] . "</td>";
-					echo "<td> </td>";
 					echo "<td>" . $row["complaint"] . "</td>";
 					echo "<td>" . $row["date"] . "</td>";
 					echo "<td>" . $row["time"] . "</td>";
 					echo "<td>" . $row["status"] . "</td>";
 					echo "<td>";
-					if (empty($row['AOR'])) {
+					if ($row['status'] === 'Pending') {
     echo "<a href='assign.php?id=" . $row["id"] . "'><button>PUSH</button></a>";
 }
 					
@@ -301,7 +300,7 @@
         </div> 
 
         <footer>
-            Copyright © 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
+            Copyright ï¿½ 2023 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">e11even eneterprise </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>

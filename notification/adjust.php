@@ -40,34 +40,34 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 if (isset($_POST['submit'])) {
     $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $category = trim($_POST['category']);
-    $complaint = trim($_POST['complaint']);
     $date = trim($_POST['date']);
     $time = trim($_POST['time']);
-    $status = 'pending';
+    $status = 'Pending';
 
-    $currentDate = date("Y-m-d");
+    // Validate and sanitize user inputs
+    // You should implement proper validation here, e.g., ensuring the date and time are in the correct format.
+
+    $currentDate = date("m-d-Y");
     if ($date < $currentDate) {
         // Date is in the past, display an error message or take appropriate action.
         $errMSG = "Error: You cannot schedule appointments in the past.";
-        header("Location: appointment.php");
+        header("Location: ../appointment.php");
         exit;
     }
 
-    $sql = "UPDATE appointment SET name = ?, email = ?, `category` = ?, complaint = ?, date = ?, time = ?, timestamp = NOW() WHERE id = ?";
+    $sql = "UPDATE appointment SET date = ?, time = ?, status = ?, timestamp = NOW() WHERE name = ?";
 
     // Prepare and execute the statement
-    $stmt = mysqli_prepare($conn, $sql);
+    $stmt = $conn->prepare($sql);
     if ($stmt) {
         // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "sssssi", $name, $email, $category, $complaint, $date, $time, $id);
+        $stmt->bind_param("ssss", $date, $time, $status, $name);
 
-        if (mysqli_stmt_execute($stmt)) {
+        if ($stmt->execute()) {
             $errMSG = "Appointment successfully sent for adjustment";
 
             // Send email
-            $to = $email;
+            $to = $email; // You need to get the email address for the appointment
             $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
             $message = "Dear $name, Your new appointment has been rescheduled for $date at $time. Please check your account for response and approval.";
             $headers = "From: covenant@example.com";
@@ -81,8 +81,8 @@ if (isset($_POST['submit'])) {
                 $errMSG = "Email sending failed.";
             }
         } else {
-            // Handle the database insert error
-            $errMSG = "Appointment scheduling failed. Error: " . $stmt->error;
+            // Handle the database update error
+            $errMSG = "Appointment rescheduling failed. Error: " . $stmt->error;
         }
 
         $stmt->close();
@@ -91,6 +91,7 @@ if (isset($_POST['submit'])) {
 
 $conn->close();
 ?>
+
 
 
 
@@ -228,17 +229,11 @@ $conn->close();
 								 echo $row['name'];
 								 }else
 								 {echo "user is logged out";
-								 header("Location:login.php");
+								 header("Location:../login.php");
 								 } ?>" style="width:355px;" readonly />
                                 </div>
                                 <div class="form-group">
-                                    <textarea placeholder="Your Complaint" style="height:250px; width:355px" name="complaint" value="<?php 
-								 if($row){
-								 echo $row['complaint'];
-								 }else
-								 {echo "user is logged out";
-								 header("Location:login.php");
-								 } ?>" readonly></textarea>
+                                  Set the date and time you want
                                 </div>
                                 <div class="form-row">
                                     <div class="col-6">
@@ -266,38 +261,6 @@ $conn->close();
                                 <div>
                                     <button class="btn btn-primary btn-block border-0 py-3" type="submit" name="submit"> SUBMIT</button>
                                 </div>
-											<div class="form-group" style="visibility:hidden;" >
-			<input type="text" name="id"  class="form-control border-0 p-4" value="<?php 
-								 if($row){
-								 echo $row['id'];
-								 }else
-								 {echo "user is logged out";
-								 header("Location:login.php");
-								 } ?>" style="width:355px;" readonly />
-								 <input type="text" name="email"  class="form-control border-0 p-4" value="<?php 
-								 if($row){
-								 echo $row['email'];
-								 }else
-								 {echo "user is logged out";
-								 header("Location:login.php");
-								 } ?>" style="width:355px;" readonly />
-								  <input type="text" name="category"  class="form-control border-0 p-4" value="<?php 
-								 if($row){
-								 echo $row['category'];
-								 }else
-								 {echo "user is logged out";
-								 header("Location:login.php");
-								 } ?>" style="width:355px;" readonly />
-								  <input type="text" name="status"  class="form-control border-0 p-4" value="<?php 
-								 if($row){
-								 echo $row['status'];
-								 }else
-								 {echo "user is logged out";
-								 header("Location:login.php");
-								 } ?>" style="width:355px;" readonly />
-								 
-								 
-								 </div>
                             </form>
                         </div>
                     </div>

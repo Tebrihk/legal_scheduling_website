@@ -39,56 +39,67 @@ $servername = "localhost";
 $username = "root";
 $password = "mysql";
 $dbname = "legal_scheduling";
-$conn = new mysqli($servername, $username, $password, $dbname);
 
+// Check if the form is submitted
 if (isset($_POST['submit'])) {
+    // Get and sanitize user inputs
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $category = trim($_POST['category']);
     $complaint = trim($_POST['complaint']);
     $date = trim($_POST['date']);
     $time = trim($_POST['time']);
-    $status = 'pending';
-	
-	 $currentDate = date("Y-m-d");
+    $status = 'Pending';
+    
+    // Check if the appointment date is in the past
+    $currentDate = date("m-d-Y");
     if ($date < $currentDate) {
-        // Date is in the past, display an error message or take appropriate action.
         $errMSG = "Error: You cannot schedule appointments in the past.";
-        header("Location: appointment.php");
-        exit;
-    }
-
-    $stmt = $conn->prepare("INSERT INTO appointment (name, email, category, complaint, date, time, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("sssssss", $name, $email, $category, $complaint, $date, $time, $status);
-
-    if ($stmt->execute()) {
-        $errMSG = "Appointment successfully sent";
-
-        // Send email
-        $to = $email;
-        $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
-        $message = "Dear $name, Your appointment has been scheduled for $date at $time. Please check your account for more details.";
-        $headers = "From: covenant@example.com";
-
-        $mailSent = mail($to, $subject, $message, $headers);
-
-        if ($mailSent) {
-            header("Location: success.php");
-        } else {
-            // Handle email sending failure
-            $errMSG = "Email sending failed.";
-        }
     } else {
-        // Handle the database insert error
-        $errMSG = "Appointment scheduling failed. Error: " . $stmt->error;
+        // Attempt to connect to the database
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Use prepared statements to insert data into the database
+        $stmt = $conn->prepare("INSERT INTO appointment (name, email, category, complaint, date, time, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("sssssss", $name, $email, $category, $complaint, $date, $time, $status);
+		
+		 $stmt1 = $conn->prepare("INSERT INTO pend (name, email, category, complaint, date, time, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt1->bind_param("sssssss", $name, $email, $category, $complaint, $date, $time, $status);
+
+        if ($stmt->execute() && $stmt1->execute()) {
+            // Insertion successful
+            $successMSG = "Appointment successfully sent.";
+
+            // Send email
+            $to = $email;
+            $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
+            $message = "Dear $name, Your appointment has been scheduled for $date at $time. Please check your account for more details.";
+            $headers = "From: covenant@example.com";
+
+            $mailSent = mail($to, $subject, $message, $headers);
+
+            if ($mailSent) {
+                // Email sent successfully
+                header("Location: success.php");
+            } else {
+                // Email sending failed
+                $errMSG = "Email sending failed.";
+            }
+        } else {
+            // Handle the database insert error
+            $errMSG = "Appointment scheduling failed. Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+		$stmt1->close();
+        $conn->close();
     }
-
-    $stmt->close();
 }
-
-$conn->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -181,9 +192,9 @@ $conn->close();
 
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Profile</a>
                                 <div class="dropdown-menu rounded-0 m-0">
-
+								
                                     <a href="notification/index.php" class="dropdown-item" id="notification"><span>Notification</span>
-  <span class="badge" style="visibility:hidden;">1</span></a>
+  <span class="badge" id="notification" style="display: none">1</span></a>
 									
                                     <a href="logout.php" class="dropdown-item">Log out</a>
                                 </div>
@@ -389,6 +400,26 @@ $conn->close();
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+	<script>
+$(document).ready(function() {
+    function checkForNewRecords() {
+        $.ajax({
+            url: 'check_for_new_record.php', // PHP script to check for new records
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.newRecord) {
+                    $('#notification').show(); // Show the notification if a new record is found
+                }
+            }
+        });
+    }
+
+    // Check for new records every 5 seconds (you can adjust the interval)
+    setInterval(checkForNewRecords, 5000);
+});
+</script>
+
 </body>
 </html>
 <?php ob_end_flush(); ?>

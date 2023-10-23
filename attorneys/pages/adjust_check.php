@@ -12,26 +12,26 @@ if ($conn->connect_error) {
 $id = strip_tags($_POST['id']);
 $name = strip_tags($_POST['name']);
 $email = strip_tags($_POST['email']);
+$category = strip_tags($_POST['category']);
 $complaint = strip_tags($_POST['complaint']);
 $AOR = strip_tags($_POST['AOR']);
 $date = strip_tags($_POST['date']);
 $time = strip_tags($_POST['time']);
-$status = "adjusted";
+$status = "Adjusted";
 
-$sql = "INSERT INTO adjust (id, name,email, complaint, AOR, date, time, status) VALUES ('$id', '$name','$email', '$complaint', '$AOR', '$date', '$time', '$status')";
+$sql = "INSERT INTO adjust (id, name,email,category, complaint, AOR, date, time, status,timestamp) VALUES ('$id', '$name','$email', '$category','$complaint', '$AOR', '$date', '$time', '$status',NOW())";
 
 if ($conn->query($sql) === true) {
-    $sql1 = "UPDATE pend SET date = '$date', time = '$time',status = '$status' WHERE id = $id";
+    $sql11 = "DELETE from assigned  WHERE id = $id";
 	$sql1 = "UPDATE appointment SET date = '$date', time = '$time',status = '$status' WHERE id = $id";
     if ($conn->query($sql1) === true) {
 	echo "successfull "; 
         header("location:index.php");
     } else {
-        echo "Error updating pend: " . $conn->error;
+        echo "Error updating appointment: " . $conn->error;
     }
 } else {
     echo "Error inserting record: " . $conn->error;
 }
-
 $conn->close();
 ?>

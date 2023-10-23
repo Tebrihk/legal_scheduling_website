@@ -25,16 +25,11 @@
         $password = "mysql";
         $dbname = "legal_scheduling";
         
-        if (!isset($_SESSION['user'])) {
-            header("Location: login.php");
-            exit;
-        }
-        
         $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_error());
         
         $id = $_GET['id'];
         $sql = mysqli_query($conn, "SELECT * FROM client WHERE id='$id'");
-        $results = mysqli_fetch_array($sql);
+        $result = mysqli_fetch_array($sql);
        
     ?>
 <!DOCTYPE html>
@@ -210,15 +205,15 @@
 					
                 <div class="card-body">
 				<form method="post" action="sender.php">
-    <input type="text" name="email" style="width:300px; height:50px;" value=" <?php if ($results) {
-            echo $results['email'];
+    <input type="text" name="email" style="width:300px; height:50px;" value=" <?php if ($result) {
+            echo $result['email'];
         } else {
             echo "Email not found";
         }?>">
     <br>
     <br>
-    <textarea style="width:300px; height:150px;" name="message">Dear <?php if ($results) {
-            echo $results['name'];
+    <textarea style="width:300px; height:150px;" name="message">Dear <?php if ($result) {
+            echo $result['name'];
         } else {
             echo "user ";
         }?>

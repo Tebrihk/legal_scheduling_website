@@ -10,7 +10,7 @@
 	
 	// if session is not set this will redirect to login page
 	if( !isset($_SESSION['user']) ) {
-		header("refresh:1;url=../login.php");
+		header("refresh:1;url=../../login.php");
 		exit;
 	}
 	$timeout = 300;
@@ -20,7 +20,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
     // User has been inactive for too long, destroy the session and log them out
     session_unset(); // Unset all session variables
     session_destroy(); // Destroy the session
-    header("Location:login.php"); // Redirect to the login page
+    header("Location:../../login.php"); // Redirect to the login page
     exit;
 	}
 	
@@ -60,7 +60,7 @@ if ($stmt) {
     if ($result->num_rows > 0) {
         $row1 = mysqli_fetch_assoc($result); // Retrieve the data for the second appointment
     } else {
-        echo "No records found for this user.";
+        
     }
 } else {
     echo "Failed to prepare the statement.";
@@ -97,7 +97,7 @@ if ($stmt) {
    if ($result2->num_rows > 0) {
     $row2 = mysqli_fetch_assoc($result2); // Retrieve the data for the third appointment
 } else {
-    echo "No records found for this user.";
+    
 }
 } else {
     echo "Failed to prepare the statement.";
@@ -301,7 +301,7 @@ if ($stmt) {
         if ($resultb->num_rows > 0) {
             $rowb = mysqli_fetch_assoc($resultb); 
             
-            if ($rowb['status'] === "adjusted") {
+            if ($rowb['status'] === "Adjusted") {
                 echo "<a href='accept.php'><button>ACCEPT</button></a>";
 				echo "<br/>";echo "<br/>";
 				echo "<a href='adjust.php'><button>ADJUST</button></a>";

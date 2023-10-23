@@ -162,7 +162,7 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu ">
-                           <li><a href="table-basic.php" class="link"><span>Appointments</span></a></li>
+                           <li><a href="index.php" class="link"><span>Appointments</span></a></li>
                             <li class="active"><a href="fullcalendar.php" class="link"><span>Calendar</span></a></li>
                         </ul>
                     </li>

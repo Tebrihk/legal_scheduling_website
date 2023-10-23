@@ -32,7 +32,7 @@
 					die("Connection failed: " . $conn->connect_error);
 				}
 				$id = $_GET['id'];
-				$sql=mysqli_query($conn,"SELECT * FROM pend WHERE id='$id'");
+				$sql=mysqli_query($conn,"SELECT * FROM assigned WHERE id='$id'");
 				$result=mysqli_fetch_array($sql);
 				
 				
@@ -100,7 +100,7 @@
 							}
 							
 							$user = mysqli_real_escape_string($conn, $_SESSION['user']);
-							$sql = mysqli_query($conn, "SELECT * FROM admin WHERE name='$user'");
+							$sql = mysqli_query($conn, "SELECT * FROM attorneys WHERE name='$user'");
 							$row = mysqli_fetch_array($sql);
 							
 							if ($row) {
@@ -177,9 +177,8 @@
                             <span>Tables</span>
                         </a>
                         <ul class="sub-menu expand">
-                            <li><a href="table-basic.php" class="link"><span>Notification</span></a></li>
-                            <li><a href="table-datatables.php" class="link"><span>Client</span></a></li>
-							<li><a href="attorney_table.php" class="link"><span>Attorneys</span></a></li>
+                           <li><a href="index.php" class="link"><span>Appointments</span></a></li>
+                            <li><a href="fullcalendar.php" class="link"><span>Calendar</span></a></li>>
                         </ul>
                     </li>
             </div>
@@ -226,18 +225,25 @@
                     </div>
                 <div class="card-body">
 										<form method="post" action="adjust_check.php">
-				<br /><input type="text" name="id" value="<?php echo $result['id']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				
 				<br /><input type="text" name="name" value="<?php echo $result['name']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
-				
 				<br /><textarea  style="height:250px; width:355px" name="complaint"  readonly="readonly"><?php echo $result['complaint']; ?></textarea><br />
-				<br /><input type="text" name="AOR" value="<?php echo $result['AOR']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
 				
-				Adjust the time and date :
+				Adjust the time and date from <?php echo $result['time']; ?> <?php echo $result['date']; ?>:
 				<br /><input  type="text" name="date" value="" style="width:300px; height:50px;" readonly="readonly" id="datePicker" /><br />
 				<br /><input  type="text" name="time" value="" style="width:300px; height:50px;" readonly="readonly" id="timePicker" /><br /><br />
 				
 
 				<br /><input type="submit" name="adjust" value="ADJUST" style="background-color:#33CCFF; color:#FFFFFF; width:90px; height:50px;" />
+				<div style="visibility:hidden;">
+				
+				<br /><input type="text" name="AOR" value="<?php echo $result['AOR']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="id" value="<?php echo $result['id']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="category" value="<?php echo $result['category']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="email" value="<?php echo $result['email']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				<br /><input type="text" name="status" value="<?php echo $result['status']; ?>" style="width:300px; height:50px;" readonly="readonly" /><br />
+				</div>
+				
 			</form>
 
               </div>
