@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 23, 2023 at 06:30 PM
+-- Generation Time: Oct 23, 2023 at 12:12 AM
 -- Server version: 8.0.31
 -- PHP Version: 7.4.33
 
@@ -161,6 +161,7 @@ CREATE TABLE `pend` (
   `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `complaint` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `AOR` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `date` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `time` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
@@ -209,13 +210,13 @@ ALTER TABLE `pend`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `attorneys`
@@ -227,13 +228,13 @@ ALTER TABLE `attorneys`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pend`
 --
 ALTER TABLE `pend`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

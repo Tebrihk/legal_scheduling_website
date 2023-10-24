@@ -62,7 +62,7 @@ if ( isset($_POST['submit']) ) {
         if ($conn->query($sql) === true)
            {
                 $errTyp = "success";
-				$errMSG = "Successfully registered";
+				$sucMSG = "Successfully registered";
 				
 				unset($name);
 				unset($email);
@@ -126,6 +126,23 @@ if ( isset($_POST['submit']) ) {
             	<div class="alert alert-<?php echo ($errTyp=="success") ? "success" : $errTyp; ?>">
 				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
                 </div>
+            	</div>
+                <?php
+			}
+			?>
+			<?php
+			if ( isset($sucMSG) ) {
+				
+				?>
+				<div class="form-group" style="position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-weight: 700;
+  color:#FFFFFF;
+  background-color:#00FFFF;">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $sucMSG; ?>
             	</div>
                 <?php
 			}

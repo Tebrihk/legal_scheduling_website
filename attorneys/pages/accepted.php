@@ -13,15 +13,20 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-$conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli_error($conn);
+ $conn = new mysqli($servername, $username, $password, $dbname);
 
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $newValue = "Accepted";
 
     // SQL query to update the status column for the appointment
     $sql = "UPDATE appointment SET status = ? WHERE id = ?";
+	$sql1 = "UPDATE assigned SET status = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
+	 $stmt1 = mysqli_prepare($conn, $sql1);
 
     if ($stmt) {
         // Bind the parameters
@@ -30,28 +35,30 @@ if (isset($_GET['id'])) {
         // Execute the update statement
         if (mysqli_stmt_execute($stmt)) {
             echo "Record updated successfully.";
+			header("refresh:1;url=index.php");
+           
+        } else {
+            echo "Error updating record: " . mysqli_error($conn);
+        }
+		if ($stmt1) {
+        // Bind the parameters
+        mysqli_stmt_bind_param($stmt1, "si", $newValue, $id);
 
-            // Send email
-            $to = $email; // Replace with the recipient's email address
-            $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
-            $message = "Your appointment has been accepted. Please check your account for details."; // Modify the message as needed
-            $headers = "From: covenant@example.com";
-
-            // Send the email
-            $mailSent = mail($to, $subject, $message, $headers);
-
-            if ($mailSent) {
-                header("refresh:1;url=index.php");
-            } else {
-                // Handle email sending failure
-                echo "Email sending failed.";
-            }
+        // Execute the update statement
+        if (mysqli_stmt_execute($stmt1)) {
+            echo "Record updated successfully.";
+			header("refresh:1;url=index.php");
+           
         } else {
             echo "Error updating record: " . mysqli_error($conn);
         }
 
         // Close the prepared statement
         mysqli_stmt_close($stmt);
+    } else {
+        echo "Failed to prepare the statement: " . mysqli_error($conn);
+    }
+	mysqli_stmt_close($stmt1);
     } else {
         echo "Failed to prepare the statement: " . mysqli_error($conn);
     }

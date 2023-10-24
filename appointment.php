@@ -52,10 +52,12 @@ if (isset($_POST['submit'])) {
     $status = 'Pending';
     
     // Check if the appointment date is in the past
-    $currentDate = date("m-d-Y");
-    if ($date < $currentDate) {
-        $errMSG = "Error: You cannot schedule appointments in the past.";
-    } else {
+    $currentDate = date("m/d/Y");
+if ($date < $currentDate) {
+    $errMSG = "Error: You cannot schedule appointments in the past.";
+    header("refresh:2;url=appointment.php"); // Redirect to the appointment.php page
+
+} else {
         // Attempt to connect to the database
         $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -72,8 +74,8 @@ if (isset($_POST['submit'])) {
 
         if ($stmt->execute() && $stmt1->execute()) {
             // Insertion successful
-            $successMSG = "Appointment successfully sent.";
-
+            $sucMSG = "Appointment successfully sent.";
+ header("Location:success.php");
             // Send email
             $to = $email;
             $subject = "YOUR APPOINTMENT WITH MARK JOHNSON FIRM";
@@ -84,10 +86,11 @@ if (isset($_POST['submit'])) {
 
             if ($mailSent) {
                 // Email sent successfully
-                header("Location: success.php");
+                header("Location:success.php");
             } else {
                 // Email sending failed
                 $errMSG = "Email sending failed.";
+				header("Location:success.php");
             }
         } else {
             // Handle the database insert error
@@ -228,6 +231,23 @@ if (isset($_POST['submit'])) {
                 <?php
 			}
 			?>
+			 <?php
+			if ( isset($sucMSG) ) {
+				
+				?>
+				<div class="form-group" style="position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-weight: 700;
+  color:#FFFFFF;
+  background-color:#00FFFF;">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $sucMSG; ?>
+            	</div>
+                <?php
+			}
+			?>
                                 <div class="form-group" >
                                  <input type="text" name="name"  class="form-control border-0 p-4" value="<?php 
 								 if($row){
@@ -266,7 +286,20 @@ if (isset($_POST['submit'])) {
                                                 <input type="text"
                                                     class="form-control border-0 p-4 datetimepicker-input"
                                                     placeholder="Select Date" data-target="#date"
-                                                    data-toggle="datetimepicker" name="date"/>
+                                                    data-toggle="datetimepicker" name="date" id="date" reqiured/>
+													<script>
+    // Get the current date
+    var today = new Date();
+
+    // Format it as yyyy-mm-dd (compatible with the 'date' input)
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var dd = String(today.getDate()).padStart(2, '0');
+    today = yyyy + '-' + mm + '-' + dd;
+
+    // Set the 'min' attribute for the input element
+    document.getElementById("date").setAttribute("min", today);
+</script>
                                             </div>
                                         </div>
                                     </div>

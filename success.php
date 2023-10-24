@@ -127,8 +127,9 @@
                 <div class="row h-100 align-items-center justify-content-center">
                     <div class="col-lg-6 py-5">
                         <div class="rounded p-5 my-5" style="background: rgba(55, 55, 63, .7);">
-                            <h1 class="text-center text-white mb-4">Get An Appointment</h1>
-                            <h1>You have successfully set and appointment...kindly wait for a feedback</h1>
+                            <h1 class="text-center text-white mb-4">SUCCESSFUL</h1>
+                            <h2 class="text-center text-white mb-4">You have successfully set and appointment...kindly wait for a feedback</h2>
+							<a href="appointment.php" style="width:80px"><button style="width:80px; background-color:#99CCFF; border-radius: 10px; height:50px; margin-left:300px;">HOME</button></a>
                         </div>
                     </div>
                 </div>

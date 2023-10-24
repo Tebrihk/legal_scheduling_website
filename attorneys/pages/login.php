@@ -46,7 +46,7 @@
 			$count = mysqli_num_rows($sql); 
 			if ($count == 1 && $row['password']==$pass) {
 			$_SESSION['user'] = $row['name'];
-			 $errMSG = "Login successful";
+			 $sucMSG = "Login successful";
 			header("refresh:1;url=index.php");
 			} else {
 			
@@ -98,6 +98,23 @@
             	<div class="alert alert-danger">
 				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
                 </div>
+            	</div>
+                <?php
+			}
+			?>
+			<?php
+			if ( isset($sucMSG) ) {
+				
+				?>
+				<div class="form-group" style="position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-weight: 700;
+  color:#FFFFFF;
+  background-color:#00FFFF;">
+				<span class="glyphicon glyphicon-info-sign"></span> <?php echo $sucMSG; ?>
             	</div>
                 <?php
 			}
